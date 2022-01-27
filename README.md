@@ -23,5 +23,5 @@ A flow-based a high performance programmable HTTP mocker and proxy.  It is desig
 5. Fire off an integration test or operation to mock against the target service.
 6. Using the FlowMock Admin Portal (FAP), review logs in the proxy logger and select a request/response entry to convert to a mock.
 7. Define the trigger condition for the mock using the flow editor.  Conditions can be as simple as no condition, i.e. always on and conditionally settable by the Admin API.  Or for more complex scenarios, based on data in the request url/header/body and/or FlowMock environment state such as request iteration, or environment variables.
-8. Traffic is now mocked when the condition is triggered and pass-through proxy continues to handle the rest of the traffic.
+8. Traffic is now mocked when the condition is met and pass-through proxy continues to handle the rest of the traffic.
 9. Repeat step 6-8 until all requests are mocked.

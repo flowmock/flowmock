@@ -2,7 +2,7 @@
 
 ![FlowMock Requests](./docs/images/flowmock_fap_requests.jpg)
 
-A flow-based a high performance programmable HTTP mocker and proxy.  It is designed to enable testing of difficult to setup scenarios or to support/replace 3rd party sandbox enviornments in pre-production enviornment.
+A flow-based high performance programmable HTTP mocker and proxy.  It is designed to enable testing of difficult to setup scenarios or to support/replace 3rd party sandbox environments in pre-production environment.
 
 ## Features
 

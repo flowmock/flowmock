@@ -12,10 +12,11 @@ builder.Services.AddHttpClient("proxy").ConfigurePrimaryHttpMessageHandler(() =>
     AutomaticDecompression = System.Net.DecompressionMethods.All
 });
 builder.Services.AddSingleton<IDataAccess, DataAccess>();
-builder.Services.AddSingleton<HttpRequestMapper>((ctx) => new HttpRequestMapper("https://api.chucknorris.io"));
+builder.Services.AddSingleton<HttpRequestMapper>();
 builder.Services.AddSingleton<HttpResponseMapper>();
 builder.Services.AddSingleton<IHttpProxier, HttpProxier>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddLazyCache();
 
 var app = builder.Build();
 

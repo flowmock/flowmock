@@ -9,8 +9,8 @@ import { RequestListPanel  } from '../components/RequestListPanel';
 import { RequestViewerPanel } from '../components/RequestViewerPanel';
 
 export function RequestViewPage() {
-  let [requests, setRequests] = React.useState([]);
-  let [activeRequest, setActiveRequest] = React.useState(null);
+  const [requests, setRequests] = React.useState([]);
+  const [activeRequest, setActiveRequest] = React.useState(null);
 
   async function fetchRequests() {
     let response = await axios.get('/api/request');

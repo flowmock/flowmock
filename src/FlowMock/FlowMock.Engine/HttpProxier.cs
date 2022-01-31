@@ -47,7 +47,7 @@ namespace FlowMock.Engine
             context.Response.Body = responseStream;                                                
             context.Request.Body.Seek(0, SeekOrigin.Begin);
             var client = _httpClientFactory.CreateClient("proxy");
-            var clientRequest = _requestMapper.Map(context.Request);
+            var clientRequest = await _requestMapper.MapAsync(context.Request);
             requestLog.Url = clientRequest.RequestUri.AbsoluteUri.ToString();
             await _responseMapper.MapAsync(context.Response, await client.SendAsync(clientRequest));
             requestLog.ResponseStatus = context.Response.StatusCode;

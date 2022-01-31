@@ -8,18 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 
-function createData(name, value) {
-  return { name, value };
-}
-
-
-const rows = [
-  createData('Content-Encoding', 'gzip'),
-  createData('Content-Type', 'text/html'),
-  createData('Content-Length', '1234'),
-];
-
-
 export function HeaderList(props) {
   console.log(props.headers);
 
@@ -28,8 +16,6 @@ export function HeaderList(props) {
   }
 
   let headers = Object.entries(JSON.parse(props.headers));
-
-  console.log(headers);
 
   return (
     <TableContainer sx={{height: 'calc(50vh - 100px)'}} component={Paper}>

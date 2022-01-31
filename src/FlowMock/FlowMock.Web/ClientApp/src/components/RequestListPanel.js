@@ -1,11 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { withStyles } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import { FixedSizeList as List } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
 
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -42,11 +35,11 @@ export function RequestListPanel(props) {
               selected={request==props.selected} 
               key={request.id}>
               <TableCell>{request.id}</TableCell>
-              <TableCell>{request.response_status}</TableCell>
+              <TableCell>{request.responseStatus}</TableCell>
               <TableCell>{new URL(request.url).host}</TableCell>
-              <TableCell>{request.request_method}</TableCell>
+              <TableCell>{request.requestMethod}</TableCell>
               <TableCell>{new URL(request.url).pathname}</TableCell>
-              <TableCell>{request.response_body.length}</TableCell>
+              <TableCell>{request.responseBody.length}</TableCell>
               <TableCell>No</TableCell>
             </TableRow>))}
         </TableBody>

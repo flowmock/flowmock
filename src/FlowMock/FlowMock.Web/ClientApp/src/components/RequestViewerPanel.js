@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -49,11 +48,11 @@ export function RequestViewerPanel(props) {
           </Tabs>
         </Box>
         <TabPanel value={requestTabIndex} index={0}>
-          <HeaderList headers={props.request.request_headers} />
+          <HeaderList headers={props.request.requestHeaders} />
         </TabPanel>
         <TabPanel value={requestTabIndex} index={1}>
-          {props.request.request_body && <ReactJson src={JSON.parse(props.request.request_body)} />}
-          {!props.request.request_body && <Typography>No request body.</Typography>}
+          {props.request.requestBody && <ReactJson src={JSON.parse(props.request.requestBody)} />}
+          {!props.request.requestBody && <Typography>No request body.</Typography>}
         </TabPanel>
         <TabPanel value={requestTabIndex} index={2}>
           This panel is under construction.
@@ -68,11 +67,11 @@ export function RequestViewerPanel(props) {
           </Tabs>
         </Box>
         <TabPanel value={responseTabIndex} index={0}>
-          <HeaderList headers={props.request.response_headers} />
+          <HeaderList headers={props.request.responseHeaders} />
         </TabPanel>
         <TabPanel value={responseTabIndex} index={1}>
-          {props.request.response_body && <ReactJson src={JSON.parse(props.request.response_body)} />}
-          {!props.request.response_body && <Typography>No response body.</Typography>}
+          {props.request.responseBody && <ReactJson src={JSON.parse(props.request.responseBody)} />}
+          {!props.request.responseBody && <Typography>No response body.</Typography>}
         </TabPanel>
         <TabPanel value={responseTabIndex} index={2}>
           This panel is under construction.

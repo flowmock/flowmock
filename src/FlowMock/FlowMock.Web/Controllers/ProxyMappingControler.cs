@@ -7,13 +7,13 @@ namespace FlowMock.Web.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class SettingController : ControllerBase
+    public class ProxyMappingController : ControllerBase
     {
         private readonly ILogger<SettingController> _logger;
         private readonly IDataAccess _dataAccess;
         private readonly IAppCache _appCache;
 
-        public SettingController(ILogger<SettingController> logger, IDataAccess dataAccess, IAppCache appCache)
+        public ProxyMappingController(ILogger<SettingController> logger, IDataAccess dataAccess, IAppCache appCache)
         {
             _logger = logger;
             _dataAccess = dataAccess;
@@ -21,16 +21,16 @@ namespace FlowMock.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Setting>> Get()
+        public async Task<IEnumerable<ProxyMapping>> Get()
         {
-            return await _dataAccess.GetAllSettingsAsync();            
+            return await _dataAccess.GetAllProxyMappingsAsync();            
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] IEnumerable<Setting> settings)
+        public async Task<IActionResult> Post([FromBody] IEnumerable<ProxyMapping> proxyMappings)
         {
-            await _dataAccess.SaveSettingsAsync(settings);
-            _appCache.Remove("settings");
+            await _dataAccess.SaveProxyMappingsAsync(proxyMappings);
+            _appCache.Remove("proxyMappings");
 
             return Ok();
         }

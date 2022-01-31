@@ -19,8 +19,20 @@ namespace FlowMock.Engine.Data
 
             await connection.ExecuteAsync(@"CREATE TABLE settings (
                 key VARCHAR(100) NOT NULL,
-                value VARCHAR(1000) NULL
+                value VARCHAR(1000) NULL,
+                description VARCHAR(500) NULL
                 );");
+
+            await connection.ExecuteAsync(@"INSERT INTO settings (key, value, description) values ('Proxy Base Path', '/proxy', 'The base path for all proxy requests.');");
+
+
+            await connection.ExecuteAsync(@"CREATE TABLE proxy_mappings (
+                base_path VARCHAR(1000) NOT NULL,
+                proxy_to_base_url VARCHAR(1000) NOT NULL
+                );");
+
+            await connection.ExecuteAsync(@"INSERT INTO proxy_mappings (base_path, proxy_to_base_url) values ('chucknorris', 'https://api.chucknorris.io');");
+            await connection.ExecuteAsync(@"INSERT INTO proxy_mappings (base_path, proxy_to_base_url) values ('excuse', 'https://excuser.herokuapp.com/v1/excuse');");
 
             await connection.ExecuteAsync(@"CREATE TABLE requests (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

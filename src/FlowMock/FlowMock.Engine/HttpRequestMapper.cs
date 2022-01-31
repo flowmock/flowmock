@@ -1,21 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FlowMock.Engine.Data;
+using FlowMock.Engine.Models;
+using LazyCache;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace FlowMock.Engine
 {
     public class HttpRequestMapper
     {
         private readonly string[] _excludedHeaders = new string[] { "Host" };
-        private readonly string _baseUrl;
+        private readonly IDataAccess _dataAccess;
+        private readonly IAppCache _appCache;
 
-        public HttpRequestMapper(string baseUrl)
+        public HttpRequestMapper(IDataAccess dataAccess, IAppCache appCache)
         {
-            _baseUrl = baseUrl;
+            _dataAccess = dataAccess;
+            _appCache = appCache;
         }
 
-        public HttpRequestMessage Map(HttpRequest request)
+        public async Task<HttpRequestMessage> MapAsync(HttpRequest request)
         {
             HttpMethod httpMethod = HttpMethod.Get;
 
@@ -41,7 +47,33 @@ namespace FlowMock.Engine
                     break;
             }
 
-            var proxyEndpoint = _baseUrl + request.Path.Value.Replace("/proxy/chucknorris", "") + request.QueryString;
+            var settings = await _appCache.GetOrAddAsync("settings", async () =>
+            {
+                return (await _dataAccess.GetAllSettingsAsync()).ToList();
+            });
+
+            var proxyBasePath = settings.FirstOrDefault(setting => setting.Key == "Proxy Base Path").Value;
+
+            var proxyMappings = await _appCache.GetOrAddAsync("proxyMappings", async () =>
+            {
+                return (await _dataAccess.GetAllProxyMappingsAsync()).ToList();
+            });
+
+            string proxyEndpoint = null;
+
+            foreach (ProxyMapping proxyMapping in proxyMappings)
+            {
+                if (request.Path.StartsWithSegments(AddPathSeperator(proxyBasePath) + proxyMapping.BasePath))
+                {
+                    proxyEndpoint = AddPathSeperator(proxyMapping.ProxyToBaseUrl) + request.Path.Value.Replace(AddPathSeperator(proxyBasePath) + proxyMapping.BasePath, "") + request.QueryString;
+                    break;
+                }
+            }
+
+            if (proxyEndpoint == null)
+            {
+                throw new KeyNotFoundException("Unable to proxy request, no mappings found.");
+            }
 
             var httpRequestMessage = new HttpRequestMessage(httpMethod, proxyEndpoint);
             httpRequestMessage.Content = new StreamContent(request.Body);
@@ -61,6 +93,11 @@ namespace FlowMock.Engine
             }
 
             return httpRequestMessage;
+        }
+
+        private static string AddPathSeperator(string path)
+        {
+            return path.EndsWith("/") ? path : path + "/";
         }
     }
 }

@@ -1,5 +1,7 @@
 # FlowMock
 
+![FlowMock Requests](./docs/images/flowmock_fap_requests.jpg)
+
 A flow-based a high performance programmable HTTP mocker and proxy.  It is designed to enable testing of difficult to setup scenarios or to support/replace 3rd party sandbox enviornments in pre-production enviornment.
 
 ## Features
@@ -25,3 +27,12 @@ A flow-based a high performance programmable HTTP mocker and proxy.  It is desig
 7. Define the trigger condition for the mock using the flow editor.  Conditions can be as simple as no condition, i.e. always on and conditionally settable by the Admin API.  Or for more complex scenarios, based on data in the request url/header/body and/or FlowMock environment state such as request iteration, or environment variables.
 8. Traffic is now mocked when the condition is met and pass-through proxy continues to handle the rest of the traffic.
 9. Repeat step 6-8 until all requests are mocked.
+
+## Docker
+https://hub.docker.com/r/vornet1/flowmock
+
+## Settings
+Proxy can be configured on the Settings page.
+
+![FlowMock General Settings](./docs/images/flowmock_fap_general_settings.jpg)
+![FlowMock Proxy Mappings](./docs/images/flowmock_fap_proxy_mappings.jpg)

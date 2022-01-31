@@ -63,9 +63,9 @@ namespace FlowMock.Engine
 
             foreach (ProxyMapping proxyMapping in proxyMappings)
             {
-                if (request.Path.StartsWithSegments(AddPathSeperator(proxyBasePath) + proxyMapping.BasePath))
+                if (request.Path.StartsWithSegments(AddPostfixPathSeperator(proxyBasePath) + proxyMapping.BasePath))
                 {
-                    proxyEndpoint = AddPathSeperator(proxyMapping.ProxyToBaseUrl) + request.Path.Value.Replace(AddPathSeperator(proxyBasePath) + proxyMapping.BasePath, "") + request.QueryString;
+                    proxyEndpoint = AddPostfixPathSeperator(proxyMapping.ProxyToBaseUrl) + RemovePrefixPathSeperator(request.Path.Value.Replace(AddPostfixPathSeperator(proxyBasePath) + proxyMapping.BasePath, "")) + request.QueryString;
                     break;
                 }
             }
@@ -95,9 +95,14 @@ namespace FlowMock.Engine
             return httpRequestMessage;
         }
 
-        private static string AddPathSeperator(string path)
+        private static string AddPostfixPathSeperator(string path)
         {
             return path.EndsWith("/") ? path : path + "/";
+        }
+
+        private static string RemovePrefixPathSeperator(string path)
+        {
+            return path.StartsWith("/") ? path.Substring(1, path.Length-1) : path;
         }
     }
 }

@@ -45,6 +45,17 @@ namespace FlowMock.Engine.Data
                 response_headers VARCHAR(10000) NULL,
                 response_body VARCHAR(100000) NULL
                 );");
+            
+            await connection.ExecuteAsync(@"CREATE TABLE requests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                name VARCHAR(100) NULL,
+                description VARCHAR(5000) NULL,
+                parameters VARCHAR(10000) NULL,
+                trigger VARCHAR(100000) NULL,
+                response_status INTEGER NULL,
+                response_headers VARCHAR(10000) NULL,
+                response_body VARCHAR(100000) NULL
+                );");
         }
     }
 }

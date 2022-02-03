@@ -4,7 +4,6 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FlowMock.Engine.Data
@@ -17,15 +16,8 @@ namespace FlowMock.Engine.Data
         {
             using var connection = new SqliteConnection(ConnectionString);
 
-            try
-            {
-                await connection.ExecuteAsync(@"INSERT INTO requests (timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body)
+            await connection.ExecuteAsync(@"INSERT INTO requests (timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body)
                 VALUES (@Timestamp, @Url, @RequestMethod, @RequestHeaders, @RequestBody, @ResponseStatus, @ResponseHeaders, @ResponseBody);", request);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public async Task<IEnumerable<ProxyMapping>> GetAllProxyMappingsAsync()
@@ -96,6 +88,34 @@ namespace FlowMock.Engine.Data
                 {
                     await connection.ExecuteAsync(@"UPDATE settings SET value=@Value WHERE key=@Key;", setting);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IEnumerable<Mock>> GetAllMocksAsync()
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+            return await connection.QueryAsync<Mock>("SELECT id, name, description, parameters, trigger, response_status, response_headers, response_body FROM mocks;");
+        }
+
+        public async Task AddMockAsync(Mock mock)
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+
+            await connection.ExecuteAsync(@"INSERT INTO mocks (name, description, parameters, trigger, response_status, response_headers, response_body)
+                VALUES (@Name, @Description, @Parameters, @Trigger, @ResponseStatus, @ResponseHeader, @ResponseBody);", mock);
+        }
+
+        public async Task UpdateMockAsync(Mock mock)
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+
+            try
+            {
+                await connection.ExecuteAsync(@"UPDATE mocks SET name=@Name, description=@Description, parameters=@Parameters, trigger=@Trigger, response_status=@ResponseStatus, response_headers=@ResponseHeader, response_body=@ResponseBody WHERE id=@Id;", mock);
             }
             catch (Exception ex)
             {

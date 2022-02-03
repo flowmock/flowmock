@@ -1,5 +1,6 @@
 import * as React from 'react';
 import ReactFlow, { addEdge, Controls, Background, removeElements } from 'react-flow-renderer';
+import uuidv4 from 'uuid/v4';
 
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
@@ -132,13 +133,18 @@ export function MockTriggerEditor(props) {
     let projected = reactflowInstance.project({ x: mousePosition.pageX - 270, y: mousePosition.pageY - 110 });
 
     props.setElements([...props.elements, {
-      id: `${type}-foo`,
+      id: `${type}-${uuidv4()}`,
       type: type,
       targetPosition: 'left',
       position: projected,
     }]);
 
     setMenuOpen(false);
+  }
+
+  if(reactflowInstance) {
+    const flow = reactflowInstance.toObject();
+    console.log(flow);
   }
 
   return (<Box sx={{ width: '100%', height: 'calc(100vh - 121px)' }} onContextMenu={handleContextMenu}>

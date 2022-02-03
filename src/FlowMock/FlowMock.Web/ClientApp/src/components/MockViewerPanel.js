@@ -29,6 +29,7 @@ function TabPanel(props) {
 
 export function MockViewerPanel(props) {
   const [tabIndex, setTabIndex] = React.useState(0);
+  const [elements, setElements] = React.useState([]);
   
   if (!props.mock) {
     return <Typography>Select a mock to view details.</Typography>
@@ -47,7 +48,7 @@ export function MockViewerPanel(props) {
           <MockSettingsEditor />
         </TabPanel>
         <TabPanel sx={{ width: '100%', height: '100%' }} value={tabIndex} index={1}>
-          <MockTriggerEditor />
+          <MockTriggerEditor elements={elements} setElements={setElements} />
         </TabPanel>
         <TabPanel value={tabIndex} index={2}>
           <MockResponseEditor />

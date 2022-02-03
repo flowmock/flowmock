@@ -1,6 +1,9 @@
 import * as React from 'react';
+import ReactFlow, { addEdge, Controls, Background, removeElements } from 'react-flow-renderer';
+
 import Box from '@mui/material/Box';
-import ReactFlow, { addEdge, Controls, Background } from 'react-flow-renderer';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 import { QueryStringComponent } from './flow_components/QueryStringComponent';
 import { GotRequestComponent } from './flow_components/GotRequestComponent';
@@ -94,14 +97,14 @@ const nodeTypes = {
   
 export function MockTriggerEditor(props) {
   const [reactflowInstance, setReactflowInstance] = React.useState(null);
-  const [elements, setElements] = React.useState(initialElements);
-  const onConnect = (params) => setElements((els) => addEdge(params, els));
-    
+  const [mousePosition, setMousePosition] = React.useState({ pageX: 0, pageY: 0, clientX: 0, clientY: 0 });
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
   React.useEffect(() => {
-    if (reactflowInstance && elements.length > 0) {
+    if (reactflowInstance && props.elements.length > 0) {
       reactflowInstance.fitView();
     }
-  }, [reactflowInstance, elements.length]);
+  }, []);
 
   const onLoad = React.useCallback(
     (rfi) => {
@@ -112,8 +115,52 @@ export function MockTriggerEditor(props) {
     [reactflowInstance]
   );
 
-  return (<Box sx={{ width: '100%', height: 'calc(100vh - 121px)' }}>        
-    <ReactFlow elements={elements} nodeTypes={nodeTypes} onLoad={onLoad} onConnect={onConnect}>
+  const onConnect = (params) => props.setElements((els) => addEdge(params, els));
+  const onElementsRemove = (elementsToRemove) => props.setElements((els) => removeElements(elementsToRemove, els));
+
+  const handleContextMenu = (event) => {    
+    setMousePosition({ pageX: event.pageX, pageY: event.pageY });
+    setMenuOpen(true);
+    event.preventDefault();
+  }
+
+  const handleClose = () => {
+    setMenuOpen(false);
+  };
+
+  const handleAddElement = (type) => {
+    let projected = reactflowInstance.project({ x: mousePosition.pageX - 270, y: mousePosition.pageY - 110 });
+
+    props.setElements([...props.elements, {
+      id: `${type}-foo`,
+      type: type,
+      targetPosition: 'left',
+      position: projected,
+    }]);
+
+    setMenuOpen(false);
+  }
+
+  return (<Box sx={{ width: '100%', height: 'calc(100vh - 121px)' }} onContextMenu={handleContextMenu}>
+    <ReactFlow elements={props.elements} nodeTypes={nodeTypes} onLoad={onLoad} onConnect={onConnect} onElementsRemove={onElementsRemove} snapToGrid={true} deleteKeyCode={46} >
+      <Menu
+        anchorReference="anchorPosition"
+        anchorPosition={{ top: mousePosition.pageY, left: mousePosition.pageX }}
+        open={menuOpen}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={() => handleAddElement('gotRequest')}>Got Request</MenuItem>
+        <MenuItem onClick={() => handleAddElement('returnMockResponse')}>Return Mock Response</MenuItem>
+        <MenuItem onClick={() => handleAddElement('returnProxyResponse')}>Return Proxy Response</MenuItem>
+        <MenuItem onClick={() => handleAddElement('requestHeader')}>Request Header</MenuItem>
+        <MenuItem onClick={() => handleAddElement('queryString')}>QueryString</MenuItem>
+        <MenuItem onClick={() => handleAddElement('requestBody')}>Body</MenuItem>
+        <MenuItem onClick={() => handleAddElement('twoAnd')}>AND</MenuItem>
+        <MenuItem onClick={() => handleAddElement('twoOr')}>OR</MenuItem>
+      </Menu>
       <Controls />
       <Background variant="lines" />
     </ReactFlow>

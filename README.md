@@ -60,6 +60,8 @@ FlowMock is designed to be a long running service in an environment.  It is avai
 
 https://hub.docker.com/r/vornet1/flowmock
 
+TODO: Kubernetes Pods
+
 ## Settings
 Proxy can be configured on the Settings page.
 

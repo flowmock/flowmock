@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'feature/initial-release'
 
 jobs:
   docker:
@@ -32,4 +31,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: vornet1/flowmock:latest
+          tags: flowmock/flowmock:latest

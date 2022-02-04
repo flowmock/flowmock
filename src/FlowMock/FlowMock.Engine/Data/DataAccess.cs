@@ -98,15 +98,15 @@ namespace FlowMock.Engine.Data
         public async Task<IEnumerable<Mock>> GetAllMocksAsync()
         {
             using var connection = new SqliteConnection(ConnectionString);
-            return await connection.QueryAsync<Mock>("SELECT id, name, description, parameters, trigger, response_status, response_headers, response_body FROM mocks;");
+            return await connection.QueryAsync<Mock>("SELECT id, priority, name, description, parameters, trigger, response_status, response_headers, response_body FROM mocks;");
         }
 
         public async Task AddMockAsync(Mock mock)
         {
             using var connection = new SqliteConnection(ConnectionString);
 
-            await connection.ExecuteAsync(@"INSERT INTO mocks (name, description, parameters, trigger, response_status, response_headers, response_body)
-                VALUES (@Name, @Description, @Parameters, @Trigger, @ResponseStatus, @ResponseHeader, @ResponseBody);", mock);
+            await connection.ExecuteAsync(@"INSERT INTO mocks (priority, name, description, parameters, trigger, response_status, response_headers, response_body)
+                VALUES (@Priority, @Name, @Description, @Parameters, @Trigger, @ResponseStatus, @ResponseHeaders, @ResponseBody);", mock);
         }
 
         public async Task UpdateMockAsync(Mock mock)
@@ -115,7 +115,8 @@ namespace FlowMock.Engine.Data
 
             try
             {
-                await connection.ExecuteAsync(@"UPDATE mocks SET name=@Name, description=@Description, parameters=@Parameters, trigger=@Trigger, response_status=@ResponseStatus, response_headers=@ResponseHeader, response_body=@ResponseBody WHERE id=@Id;", mock);
+                await connection.ExecuteAsync(@"UPDATE mocks SET priority=@Priority, name=@Name, description=@Description, parameters=@Parameters, trigger=@Trigger, 
+                    response_status=@ResponseStatus, response_headers=@ResponseHeaders, response_body=@ResponseBody WHERE id=@Id;", mock);
             }
             catch (Exception ex)
             {

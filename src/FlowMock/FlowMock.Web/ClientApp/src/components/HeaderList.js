@@ -9,13 +9,10 @@ import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
 
 export function HeaderList(props) {
-  console.log(props.headers);
 
   if(!props.headers) {
     return <Typography>Unable to render header list.</Typography>
   }
-
-  let headers = Object.entries(JSON.parse(props.headers));
 
   return (
     <TableContainer sx={{height: 'calc(50vh - 100px)'}} component={Paper}>
@@ -27,7 +24,7 @@ export function HeaderList(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {headers.map((header) => (
+          {props.headers.map((header) => (
             <TableRow
               key={header[0]}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

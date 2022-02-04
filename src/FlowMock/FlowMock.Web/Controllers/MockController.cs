@@ -29,8 +29,8 @@ namespace FlowMock.Web.Controllers
             await _dataAccess.AddMockAsync(mock);
         }
 
-        [HttpPut]
-        public async Task Put([FromBody] Mock mock)
+        [HttpPut("{id}")]
+        public async Task Put(long id, [FromBody] Mock mock)
         {
             await _dataAccess.UpdateMockAsync(mock);
         }

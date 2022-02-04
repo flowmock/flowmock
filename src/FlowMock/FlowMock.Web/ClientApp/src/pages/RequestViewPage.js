@@ -15,6 +15,7 @@ export function RequestViewPage() {
   async function fetchRequests() {
     let response = await axios.get('/api/request');
     let requests = await response.data;
+    requests.headers = Object.entries(JSON.parse(requests.headers));
     setRequests(requests);
   }
 

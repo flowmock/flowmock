@@ -46,8 +46,9 @@ namespace FlowMock.Engine.Data
                 response_body VARCHAR(100000) NULL
                 );");
             
-            await connection.ExecuteAsync(@"CREATE TABLE requests (
+            await connection.ExecuteAsync(@"CREATE TABLE mocks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                priority INTEGER NOT NULL,
                 name VARCHAR(100) NULL,
                 description VARCHAR(5000) NULL,
                 parameters VARCHAR(10000) NULL,
@@ -56,6 +57,8 @@ namespace FlowMock.Engine.Data
                 response_headers VARCHAR(10000) NULL,
                 response_body VARCHAR(100000) NULL
                 );");
+
+            await connection.ExecuteAsync("INSERT INTO mocks (priority, name, description, parameters, trigger, response_status, response_body) values (100, 'A simple mock', 'A description for a simple mock', '[{\"name\": \"foo\", \"value\": \"bar\"}]', '{}', 200, 'A response from the simple mock.');");
         }
     }
 }

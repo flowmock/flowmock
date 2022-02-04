@@ -18,6 +18,7 @@ export function MockViewPage() {
     mocks.map((mock) => {
       mock.parameters = JSON.parse(mock.parameters);
       mock.trigger = JSON.parse(mock.trigger);
+      mock.responseHeaders = JSON.parse(mock.responseHeaders);
     })    
     setMocks(mocks);
   }

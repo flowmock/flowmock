@@ -1,8 +1,6 @@
 ﻿using FlowMock.Engine.Data;
-using FlowMock.Engine.Models;
 using LazyCache;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,13 +10,15 @@ namespace FlowMock.Engine
     {
         private readonly RequestDelegate _next;
         private readonly IHttpProxier _httpProxier;
+        private readonly IHttpMocker _httpMocker;
         private readonly IDataAccess _dataAccess;
         private readonly IAppCache _appCache;
 
-        public HttpProxierMiddleware(RequestDelegate next, IHttpProxier httpProxier, IDataAccess dataAccess, IAppCache appCache)
+        public HttpProxierMiddleware(RequestDelegate next, IHttpProxier httpProxier, IHttpMocker httpMocker, IDataAccess dataAccess, IAppCache appCache)
         {
             _next = next;
             _httpProxier = httpProxier;
+            _httpMocker = httpMocker;
             _dataAccess = dataAccess;
             _appCache = appCache;
         }
@@ -38,7 +38,14 @@ namespace FlowMock.Engine
                 return;
             }
 
-            await _httpProxier.ProxyAsync(context);
+            if (await _httpMocker.ShouldHandleAsync(context))
+            {
+                await _httpMocker.ProxyAsync(context);
+            }
+            else
+            {
+                await _httpProxier.ProxyAsync(context);
+            }
         }
     }
 }

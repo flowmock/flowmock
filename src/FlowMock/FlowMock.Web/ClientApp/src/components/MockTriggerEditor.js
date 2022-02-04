@@ -31,7 +31,7 @@ export function MockTriggerEditor(props) {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if (props.reactflowInstance) {
+    if (props.reactflowInstance && props.trigger.position) {
       const [x = 0, y = 0] = props.trigger.position;
       props.reactflowInstance.setTransform({ x, y, zoom: props.trigger.zoom || 0 });
     }

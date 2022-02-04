@@ -63,7 +63,7 @@ export function MockViewerPanel(props) {
         <MockTriggerEditor trigger={props.mock.trigger} setTrigger={handleSetTrigger} reactflowInstance={props.reactflowInstance} setReactflowInstance={props.setReactflowInstance} />
       </TabPanel>
       <TabPanel value={tabIndex} index={2}>
-        <MockResponseEditor mock={props.mock} />
+        <MockResponseEditor mock={props.mock} setMock={props.setMock} />
       </TabPanel>
     </Box>
   );

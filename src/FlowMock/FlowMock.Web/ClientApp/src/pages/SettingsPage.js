@@ -76,7 +76,6 @@ export function SettingsPage() {
   }
 
   const handleDeleteProxyMapping = (selected) => {
-    console.log(selected);
     setProxyMappings(proxyMappings.filter(mapping => selected.some(select => mapping.basePath !== select)));    
     setHasChanges(true);
   }

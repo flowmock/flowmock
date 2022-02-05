@@ -44,6 +44,10 @@ export function MockViewerPanel(props) {
     props.setMock(props.mock);
   }
 
+  const handleReactFlowinstanceLoad = (reactflowInstance) => {
+    props.onReactFlowInstanceLoad(reactflowInstance);
+  }
+
   return (
     <Box sx={{mt: 1, mr: 1}}>
       <Box sx={{ width: '100%', m:1 }}>
@@ -60,7 +64,7 @@ export function MockViewerPanel(props) {
         <MockSettingsEditor mock={props.mock} setMock={props.setMock} />
       </TabPanel>
       <TabPanel sx={{ width: '100%', height: '100%' }} value={tabIndex} index={1}>
-        <MockTriggerEditor trigger={props.mock.trigger} setTrigger={handleSetTrigger} reactflowInstance={props.reactflowInstance} setReactflowInstance={props.setReactflowInstance} />
+        <MockTriggerEditor trigger={props.mock.trigger} setTrigger={handleSetTrigger} onReactFlowInstanceLoad={handleReactFlowinstanceLoad} />
       </TabPanel>
       <TabPanel value={tabIndex} index={2}>
         <MockResponseEditor mock={props.mock} setMock={props.setMock} />

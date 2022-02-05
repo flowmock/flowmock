@@ -52,6 +52,10 @@ export function MockViewPage() {
     await axios.put(`/api/mock/${sendMock.id}`, sendMock);
   }
 
+  const handleReactFlowInstanceLoad = (reactflowInstance) => {
+    setReactflowInstance(reactflowInstance);
+  }
+
   return (
     <Stack sx={{ height: '100%' }} direction="row"
     divider={<Divider orientation="vertical" flexItem />}
@@ -60,7 +64,7 @@ export function MockViewPage() {
         <MockListPanel mocks={mocks} selected={activeMock} onSelected={handleOnMockListSelected} />       
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        <MockViewerPanel mock={activeMock} setMock={handleSetMock} onSave={handleSave} reactflowInstance={reactflowInstance} setReactflowInstance={setReactflowInstance} />
+        <MockViewerPanel mock={activeMock} setMock={handleSetMock} onSave={handleSave} onReactFlowInstanceLoad={handleReactFlowInstanceLoad} />
       </Box>
     </Stack>
   );

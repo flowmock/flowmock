@@ -49,8 +49,6 @@ export function MockSettingsEditor(props) {
     props.setMock(props.mock);
   }
 
-  console.log(props.mock);
-
   return (
     <Stack
       component="form"

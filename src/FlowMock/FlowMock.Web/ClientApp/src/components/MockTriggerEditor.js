@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactFlow, { addEdge, Controls, Background, removeElements } from 'react-flow-renderer';
+import ReactFlow, { isEdge, addEdge, MiniMap, Controls, Background, removeElements } from 'react-flow-renderer';
 import uuidv4 from 'uuid/v4';
 
 import Box from '@mui/material/Box';
@@ -27,34 +27,44 @@ const nodeTypes = {
 };
   
 export function MockTriggerEditor(props) {
+  const [reactflowInstance, setReactflowInstance] = React.useState(null);
+  const [elements, setElements] = React.useState([]);
+
   const [mousePosition, setMousePosition] = React.useState({ pageX: 0, pageY: 0, clientX: 0, clientY: 0 });
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if (props.reactflowInstance && props.trigger.position) {
+    setElements(props.trigger.elements.map(e => {
+      e.data = {...e.data, onChange: handleElementChange}
+      return e;
+    }));
+
+    if (reactflowInstance && props.trigger.position) {
       const [x = 0, y = 0] = props.trigger.position;
-      props.reactflowInstance.setTransform({ x, y, zoom: props.trigger.zoom || 0 });
+      reactflowInstance.setTransform({ x, y, zoom: props.trigger.zoom || 0 });      
     }
-  }, [props.reactflowInstance]);
+
+    if (reactflowInstance) {
+      props.onReactFlowInstanceLoad(reactflowInstance);
+    }
+
+  }, [reactflowInstance]);
+
+  const onConnect = (params) => {
+      setElements((els) => addEdge(params, els))
+  };
 
   const onLoad = React.useCallback(
     (rfi) => {
-      if (!props.reactflowInstance) {
-        props.setReactflowInstance(rfi);
+      if (!reactflowInstance) {
+        setReactflowInstance(rfi);
       }
     },
-    [props.reactflowInstance]
+    [reactflowInstance]
   );
 
-  const onConnect = (params) => {
-    props.trigger.elements = addEdge(params, props.trigger.elements);
-    props.setTrigger(props.trigger);
-  }
-
-  const onElementsRemove = (elementsToRemove) => {
-    props.trigger.elements = removeElements(elementsToRemove, props.trigger.elements)
-    props.setTrigger(props.trigger);
-  }
+  const onElementsRemove = (elementsToRemove) =>
+  setElements((els) => removeElements(elementsToRemove, els));
 
   const handleContextMenu = (event) => {    
     setMousePosition({ pageX: event.pageX, pageY: event.pageY });
@@ -66,35 +76,36 @@ export function MockTriggerEditor(props) {
     setMenuOpen(false);
   };
 
+  const handleElementChange = (data) => {
+    setElements((els) => els.map((e) => {
+      if (isEdge(e) || e.data != data) {
+        return e;
+      }
+
+      return {
+        ...e,
+        data: {
+          ...e.data
+        },
+      };
+    }))
+  };
+
   const handleAddElement = (type) => {
-    let projected = props.reactflowInstance.project({ x: mousePosition.pageX - 270, y: mousePosition.pageY - 110 });
+    let projected = reactflowInstance.project({ x: mousePosition.pageX - 270, y: mousePosition.pageY - 110 });
 
-    if (props.trigger.elements) {
-      props.trigger.elements = [...props.trigger.elements, {
-        id: `${type}-${uuidv4()}`,
-        type: type,
-        targetPosition: 'left',
-        position: projected,
-      }];
-    } else {
-      props.trigger.elements = [{
-        id: `${type}-${uuidv4()}`,
-        type: type,
-        targetPosition: 'left',
-        position: projected,
-      }];
-    }
+    setElements([...elements, {
+      id: `${type}-${uuidv4()}`,
+      type: type,
+      position: projected,
+      data: { onChange: handleElementChange }
+    }]);
 
-    props.setTrigger(props.trigger);
     setMenuOpen(false);
   }
 
-  if(!props.trigger) {
-    return "No trigger available";
-  }
-
   return (<Box sx={{ width: '100%', height: 'calc(100vh - 170px)' }} onContextMenu={handleContextMenu}>
-    <ReactFlow elements={props.trigger.elements} nodeTypes={nodeTypes} onLoad={onLoad} onConnect={onConnect} onElementsRemove={onElementsRemove} snapToGrid={true} deleteKeyCode={46} >
+    <ReactFlow elements={elements} nodeTypes={nodeTypes} onLoad={onLoad} onConnect={onConnect} onElementsRemove={onElementsRemove} snapToGrid={true} deleteKeyCode={46} key="edges">
       <Menu
         anchorReference="anchorPosition"
         anchorPosition={{ top: mousePosition.pageY, left: mousePosition.pageX }}
@@ -110,6 +121,7 @@ export function MockTriggerEditor(props) {
         <MenuItem onClick={() => handleAddElement('twoAnd')}>AND</MenuItem>
         <MenuItem onClick={() => handleAddElement('twoOr')}>OR</MenuItem>
       </Menu>
+      <MiniMap />
       <Controls />
       <Background variant="lines" />
     </ReactFlow>

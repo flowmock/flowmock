@@ -22,6 +22,8 @@ namespace FlowMock.Engine
                 proxyResponse.Headers.Add(header.Key, new StringValues(header.Value.ToArray()));
             }
 
+            proxyResponse.StatusCode = (int)endpointResponse.StatusCode;
+
             await (await endpointResponse.Content.ReadAsStreamAsync()).CopyToAsync(proxyResponse.Body);
         }
     }

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ReactFlow, { isEdge, addEdge, MiniMap, Controls, Background, removeElements } from 'react-flow-renderer';
-import uuidv4 from 'uuid/v4';
 
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
@@ -95,11 +94,17 @@ export function MockTriggerEditor(props) {
     }))
   };
 
+  const randomString = (length, chars) => {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  }
+  
   const handleAddElement = (type) => {
     let projected = reactflowInstance.project({ x: mousePosition.pageX - 270, y: mousePosition.pageY - 110 });
 
     setElements([...elements, {
-      id: `${type}-${uuidv4()}`,
+      id: `${type}-${randomString(15, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')}`,
       type: type,
       position: projected,
       data: { onChange: handleElementChange }

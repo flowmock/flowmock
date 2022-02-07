@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
 import { QueryStringComponent } from './flow_components/QueryStringComponent';
 import { GotRequestComponent } from './flow_components/GotRequestComponent';
@@ -14,7 +15,7 @@ import { ReturnMockComponent } from './flow_components/ReturnMockComponent';
 import { ReturnProxyComponent } from './flow_components/ReturnProxyComponent';
 import { TwoAndComponent } from './flow_components/TwoAndComponent';
 import { TwoOrComponent } from './flow_components/TwoOrComponent';
-import { Typography } from '@mui/material';
+import { DelayComponent } from './flow_components/DelayComponent';
   
 const nodeTypes = {
   gotRequest: GotRequestComponent,
@@ -24,7 +25,8 @@ const nodeTypes = {
   returnProxyResponse: ReturnProxyComponent,
   queryString: QueryStringComponent,
   twoAnd: TwoAndComponent,
-  twoOr: TwoOrComponent,  
+  twoOr: TwoOrComponent,
+  delay: DelayComponent
 };
   
 export function MockTriggerEditor(props) {
@@ -132,6 +134,8 @@ export function MockTriggerEditor(props) {
         <Divider><Typography variant='caption'>Conditions</Typography></Divider>
         <MenuItem onClick={() => handleAddElement('twoAnd')}>AND</MenuItem>
         <MenuItem onClick={() => handleAddElement('twoOr')}>OR</MenuItem>
+        <Divider><Typography variant='caption'>Utilities</Typography></Divider>
+        <MenuItem onClick={() => handleAddElement('delay')}>Delay</MenuItem>
       </Menu>
       <MiniMap />
       <Controls />

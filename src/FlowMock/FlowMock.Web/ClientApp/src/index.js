@@ -1,16 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+
+import { RequestViewPage } from './pages/RequestViewPage';
+import { MockViewPage } from './pages/MockViewPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl}>
-    <App />
+    <Routes>
+      <Route path="/" element={<App />} >
+        <Route path='requests' element={<RequestViewPage />} />
+        <Route path='mocks' element={<MockViewPage />} />
+        <Route path='settings' element={<SettingsPage />} />
+      </Route>
+    </Routes>
   </BrowserRouter>,
   rootElement);
 

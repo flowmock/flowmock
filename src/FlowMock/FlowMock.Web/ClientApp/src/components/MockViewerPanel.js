@@ -3,7 +3,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { MockSettingsEditor } from './MockSettingsEditor';
 import { MockTriggerEditor } from './MockTriggerEditor';
@@ -35,6 +37,10 @@ export function MockViewerPanel(props) {
     props.onSave(props.mock);
   }
 
+  const handleDeleteClick = async () => {
+    props.onDelete(props.mock);
+  }
+
   if (!props.mock) {
     return <Typography>Select a mock to view details.</Typography>
   }
@@ -51,7 +57,12 @@ export function MockViewerPanel(props) {
   return (
     <Box sx={{mt: 1, mr: 1}}>
       <Box sx={{ width: '100%', m:1 }}>
-        <Button variant="contained" onClick={handleSaveClick}>Save</Button>
+        <IconButton component="span" onClick={handleSaveClick}>
+          <EditIcon />
+        </IconButton>
+        <IconButton component="span" onClick={handleDeleteClick}>
+          <DeleteIcon />
+        </IconButton>
       </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tabIndex} onChange={(e, tabIndex) => setTabIndex(tabIndex)}>

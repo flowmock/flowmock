@@ -1,5 +1,6 @@
 ﻿using FlowMock.Engine.Data;
 using FlowMock.Engine.Models;
+using FlowMock.Engine.Models.Rules;
 using FlowMock.Engine.Models.Trigger;
 using LazyCache;
 using Microsoft.AspNetCore.Http;
@@ -26,8 +27,20 @@ namespace FlowMock.Engine
             _appCache = appCache;
         }
 
-        public async Task ProxyAsync(HttpContext context, Mock mock)
+        public async Task HandleAsync(HttpContext context, Mock mock)
         {
+            // Log entry for the access log, this gets built out as info is available.
+            var requestLog = new Request();
+            requestLog.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            requestLog.RequestMethod = context.Request.Method;
+            // requestLog.Url = UriHelper.GetDisplayUrl(context.Request);
+            requestLog.RequestHeaders = JsonSerializer.Serialize(context.Request.Headers);
+            using MemoryStream requestStream = new MemoryStream();
+            await context.Request.Body.CopyToAsync(requestStream);
+            context.Request.Body = requestStream;
+            requestLog.RequestBody = Encoding.UTF8.GetString(requestStream.ToArray());
+            context.Request.Body.Seek(0, SeekOrigin.Begin);
+
             var responseHeaders = JsonSerializer.Deserialize<IEnumerable<MockParameter>>(mock.ResponseHeaders);
 
             foreach (var header in responseHeaders)
@@ -35,16 +48,20 @@ namespace FlowMock.Engine
                 context.Response.Headers.Add(header.Name, new StringValues(header.Value.Split(";").ToArray()));
             }
 
+            requestLog.ResponseStatus = mock.ResponseStatus;
             context.Response.StatusCode = mock.ResponseStatus;
-
+            requestLog.ResponseHeaders = JsonSerializer.Serialize(context.Response.Headers);
+            requestLog.ResponseBody = mock.ResponseBody;
             await (new MemoryStream(Encoding.UTF8.GetBytes(mock.ResponseBody ?? ""))).CopyToAsync(context.Response.Body);
+            requestLog.MockId = mock.Id;
+            await _dataAccess.AddRequestAsync(requestLog);
         }
 
         public async Task<Mock> ShouldHandleAsync(HttpContext context)
         {
             var mocks = await _dataAccess.GetAllMocksAsync();
 
-            foreach(var mock in mocks)
+            foreach (var mock in mocks)
             {
                 var trigger = JsonSerializer.Deserialize<TriggerBody>(mock.Trigger);
 
@@ -54,54 +71,70 @@ namespace FlowMock.Engine
                     mockState.Add(param.Name, param.Value);
                 }
 
-                var startNode = new StartNode();
+                List<INode> nodes = new List<INode>();
+                NodeFactory nodeFactory = new NodeFactory();
 
-                // First find the gotRequest element.
-                var startElement = trigger.Elements.FirstOrDefault((element) => element.Type == "gotRequest");
+                if (trigger?.Elements == null) { return null;  }
 
-                // Use the id to find the connection.
-                var startElementConnection = trigger.Elements.FirstOrDefault(element => element.Source == startElement.Id);
-
-                // Get the target element.
-                var targetElement = trigger.Elements.FirstOrDefault(element => element.Id == startElementConnection.Target);
-
-                if(targetElement.Type == "requestHeader")
+                foreach (var element in trigger.Elements)
                 {
-                    RequestHeaderData headerData = JsonSerializer.Deserialize<RequestHeaderData>(targetElement.Data);
-
-                    foreach (var nameOpValue in headerData.Headers)
+                    var node = nodeFactory.GetNode(element);
+                    if (node != null)
                     {
-                        var header =  context.Request.Headers.FirstOrDefault(h => h.Key == nameOpValue.Name);
-
-                        if (header.Equals(default(KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>)))
-                        {
-                            return null;
-                        }
-
-                        var value = nameOpValue.Value;
-                        foreach (var envVar in mockState)
-                        {
-                            value = value.Replace("{{" + envVar.Key + "}}", envVar.Value);
-                        }
-
-                        if(nameOpValue.Op == "equals" && header.Value == value)
-                        {
-
-                            // Use the id to find the connection.
-                            var nextConnection = trigger.Elements.FirstOrDefault(element => element.Source == targetElement.Id);
-                            var nextTarget = trigger.Elements.FirstOrDefault(element => element.Id == nextConnection.Target);
-
-                            if(nextTarget.Type == "returnMockResponse")
-                            {
-                                return mock;
-                            }
-                        }
-                    }                            
+                        nodes.Add(node);
+                    }
                 }
 
-                startNode.ExecOut = trigger.Elements.FirstOrDefault((element) => element.Type == "gotRequest");
+                foreach (var element in trigger.Elements)
+                {
+                    if (element.Source == null || element.Target == null)
+                    {
+                        // not a connection.
+                        continue;
+                    }
 
-                return null;
+                    var sourceNode = nodes.FirstOrDefault(node => node.Id == element.Source);
+                    var targetNode = nodes.FirstOrDefault(node => node.Id == element.Target);
+
+                    var sourceConnector = sourceNode.Connectors.FirstOrDefault(connector => connector.Id == element.SourceHandle);
+                    var targetConnector = targetNode.Connectors.FirstOrDefault(connector => connector.Id == element.TargetHandle);
+
+                    if (sourceConnector == null)
+                    {
+                        sourceConnector = new Connector { Node = sourceNode, Id = element.SourceHandle };
+                        sourceNode.Connectors.Add(sourceConnector);
+                    }
+
+                    if (targetConnector == null)
+                    {
+                        targetConnector = new Connector { Node = targetNode, Id = element.TargetHandle };
+                        targetNode.Connectors.Add(targetConnector);
+                    }
+
+                    sourceConnector.Connection = targetConnector;
+                    targetConnector.Connection = sourceConnector;
+                }
+
+                // First find the gotRequest element.
+                var currentNode = nodes.FirstOrDefault(node => node is GotRequestEventNode);
+
+                while (!(currentNode is ReturnMockResponseNode || currentNode is ReturnProxyResponseNode || currentNode is DeadEndNode))
+                {
+                    currentNode = await currentNode.GetNextNodeAsync(new Context()
+                    {
+                        HttpContext = context,
+                        MockState = mockState
+                    });
+                }
+
+                if (currentNode is ReturnMockResponseNode)
+                {
+                    return mock;
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             return null;

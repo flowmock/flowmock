@@ -15,8 +15,12 @@ export function RequestViewPage() {
   async function fetchRequests() {
     let response = await axios.get('/api/request');
     let requests = await response.data;
-    requests.headers = Object.entries(JSON.parse(requests.headers));
-    setRequests(requests);
+
+    setRequests(requests.map(request => {
+      request.requestHeaders = Object.entries(JSON.parse(request.requestHeaders));
+      request.responseHeaders = Object.entries(JSON.parse(request.responseHeaders));
+      return request;
+    }));
   }
 
   React.useEffect(() => {

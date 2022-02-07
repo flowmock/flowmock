@@ -9,6 +9,6 @@ namespace FlowMock.Engine
     {
         Task<Mock> ShouldHandleAsync(HttpContext context);
 
-        Task ProxyAsync(HttpContext context, Mock mock);
+        Task HandleAsync(HttpContext context, Mock mock);
     }
 }

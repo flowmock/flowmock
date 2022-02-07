@@ -5,6 +5,7 @@ import uuidv4 from 'uuid/v4';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
 
 import { QueryStringComponent } from './flow_components/QueryStringComponent';
 import { GotRequestComponent } from './flow_components/GotRequestComponent';
@@ -14,6 +15,7 @@ import { ReturnMockComponent } from './flow_components/ReturnMockComponent';
 import { ReturnProxyComponent } from './flow_components/ReturnProxyComponent';
 import { TwoAndComponent } from './flow_components/TwoAndComponent';
 import { TwoOrComponent } from './flow_components/TwoOrComponent';
+import { Typography } from '@mui/material';
   
 const nodeTypes = {
   gotRequest: GotRequestComponent,
@@ -34,10 +36,12 @@ export function MockTriggerEditor(props) {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
-    setElements(props.trigger.elements.map(e => {
-      e.data = {...e.data, onChange: handleElementChange}
-      return e;
-    }));
+    if(props.trigger.elements) {
+      setElements(props.trigger.elements.map(e => {
+        e.data = {...e.data, onChange: handleElementChange}
+        return e;
+      }));
+    }
 
     if (reactflowInstance && props.trigger.position) {
       const [x = 0, y = 0] = props.trigger.position;
@@ -112,12 +116,15 @@ export function MockTriggerEditor(props) {
         open={menuOpen}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => handleAddElement('gotRequest')}>Got Request</MenuItem>
+        <Divider><Typography variant='caption'>Inputs/Outputs</Typography></Divider>
+        <MenuItem onClick={() => handleAddElement('gotRequest')}>Got Request Event</MenuItem>
         <MenuItem onClick={() => handleAddElement('returnMockResponse')}>Return Mock Response</MenuItem>
         <MenuItem onClick={() => handleAddElement('returnProxyResponse')}>Return Proxy Response</MenuItem>
+        <Divider><Typography variant='caption'>Requests</Typography></Divider>
         <MenuItem onClick={() => handleAddElement('requestHeader')}>Request Header</MenuItem>
         <MenuItem onClick={() => handleAddElement('queryString')}>QueryString</MenuItem>
         <MenuItem onClick={() => handleAddElement('requestBody')}>Body</MenuItem>
+        <Divider><Typography variant='caption'>Conditions</Typography></Divider>
         <MenuItem onClick={() => handleAddElement('twoAnd')}>AND</MenuItem>
         <MenuItem onClick={() => handleAddElement('twoOr')}>OR</MenuItem>
       </Menu>

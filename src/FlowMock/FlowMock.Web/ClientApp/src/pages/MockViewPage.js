@@ -40,7 +40,7 @@ export function MockViewPage() {
     let sendMock = {...mock}
 
     sendMock.parameters = JSON.stringify(mock.parameters);
-    
+
     if(reactflowInstance) {
       sendMock.trigger = JSON.stringify(reactflowInstance.toObject());
     } else {
@@ -52,6 +52,24 @@ export function MockViewPage() {
     await axios.put(`/api/mock/${sendMock.id}`, sendMock);
   }
 
+  const handleAddMock = () => {
+    setMocks([...mocks, {
+      priority: 100,
+      name: 'A simple mock.',
+      description: 'A description for a simple mock',
+      parameters: [],
+      trigger: {},
+      responseHeaders: [],
+      responseStatus: 200,
+      responseBody: ''
+    }]);
+  }
+
+  const handleDelete = async (mock) => {
+    await axios.delete(`/api/mock/${mock.id}`);
+    await fetchMocks();
+  }
+
   const handleReactFlowInstanceLoad = (reactflowInstance) => {
     setReactflowInstance(reactflowInstance);
   }
@@ -61,10 +79,10 @@ export function MockViewPage() {
     divider={<Divider orientation="vertical" flexItem />}
     spacing={1}>
       <Box sx={{ width: '300px'}}>
-        <MockListPanel mocks={mocks} selected={activeMock} onSelected={handleOnMockListSelected} />       
+        <MockListPanel mocks={mocks} selected={activeMock} onSelected={handleOnMockListSelected} onAdd={handleAddMock} />       
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        <MockViewerPanel mock={activeMock} setMock={handleSetMock} onSave={handleSave} onReactFlowInstanceLoad={handleReactFlowInstanceLoad} />
+        <MockViewerPanel mock={activeMock} setMock={handleSetMock} onSave={handleSave} onDelete={handleDelete} onReactFlowInstanceLoad={handleReactFlowInstanceLoad} />
       </Box>
     </Stack>
   );

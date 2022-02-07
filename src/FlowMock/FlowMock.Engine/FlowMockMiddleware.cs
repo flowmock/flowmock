@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlowMock.Engine
 {
-    public class HttpProxierMiddleware
+    public class FlowMockMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly IHttpProxier _httpProxier;
@@ -14,7 +14,7 @@ namespace FlowMock.Engine
         private readonly IDataAccess _dataAccess;
         private readonly IAppCache _appCache;
 
-        public HttpProxierMiddleware(RequestDelegate next, IHttpProxier httpProxier, IHttpMocker httpMocker, IDataAccess dataAccess, IAppCache appCache)
+        public FlowMockMiddleware(RequestDelegate next, IHttpProxier httpProxier, IHttpMocker httpMocker, IDataAccess dataAccess, IAppCache appCache)
         {
             _next = next;
             _httpProxier = httpProxier;
@@ -41,11 +41,11 @@ namespace FlowMock.Engine
             var mock = await _httpMocker.ShouldHandleAsync(context);
             if(mock != null)
             {
-                await _httpMocker.ProxyAsync(context, mock);
+                await _httpMocker.HandleAsync(context, mock);
             }
             else
             {
-                await _httpProxier.ProxyAsync(context);
+                await _httpProxier.HandleAsync(context);
             }
         }
     }

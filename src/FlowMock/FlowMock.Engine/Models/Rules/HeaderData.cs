@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace FlowMock.Engine.Models.Trigger
+namespace FlowMock.Engine.Models.Rules
 {
-    public class RequestHeaderData
+    public class HeaderData
     {
         [JsonPropertyName("headers")]
         public IEnumerable<NameOpValue> Headers { get; set; }

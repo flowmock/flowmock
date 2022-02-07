@@ -6,7 +6,8 @@ import Stack from '@mui/material/Stack';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { ProxyMappingsPanel } from '../components/ProxyMappingsPanel';
 import { GeneralSettingsPanel } from '../components/GeneralSettingsPanel';
@@ -89,7 +90,9 @@ export function SettingsPage() {
   return (
     <Stack direction="column" spacing={1}>
       <Box sx={{ width: '100%', m:1 }}>
-        <Button variant="contained" disabled={!hasChanges} onClick={handleSaveClick}>Save</Button>
+        <IconButton component="span" disabled={!hasChanges} onClick={handleSaveClick}>
+          <EditIcon />
+        </IconButton>
       </Box>
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

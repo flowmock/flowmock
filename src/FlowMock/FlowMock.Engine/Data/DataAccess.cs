@@ -16,8 +16,8 @@ namespace FlowMock.Engine.Data
         {
             using var connection = new SqliteConnection(ConnectionString);
 
-            await connection.ExecuteAsync(@"INSERT INTO requests (timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body)
-                VALUES (@Timestamp, @Url, @RequestMethod, @RequestHeaders, @RequestBody, @ResponseStatus, @ResponseHeaders, @ResponseBody);", request);
+            await connection.ExecuteAsync(@"INSERT INTO requests (timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body, mock_id)
+                VALUES (@Timestamp, @Url, @RequestMethod, @RequestHeaders, @RequestBody, @ResponseStatus, @ResponseHeaders, @ResponseBody, @MockId);", request);
         }
 
         public async Task<IEnumerable<ProxyMapping>> GetAllProxyMappingsAsync()
@@ -29,7 +29,7 @@ namespace FlowMock.Engine.Data
         public async Task<IEnumerable<Request>> GetAllRequestsAsync()
         {
             using var connection = new SqliteConnection(ConnectionString);
-            return await connection.QueryAsync<Request>("SELECT id, timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body FROM requests;");
+            return await connection.QueryAsync<Request>("SELECT id, timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body, mock_id FROM requests;");
         }
 
         public async Task<IEnumerable<Setting>> GetAllSettingsAsync()

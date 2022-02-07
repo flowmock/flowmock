@@ -5,9 +5,9 @@ namespace FlowMock.Engine.Models.Trigger
     public class Position
     {
         [JsonPropertyName("x")]
-        public int X { get; set; }
+        public decimal X { get; set; }
 
         [JsonPropertyName("y")]
-        public int Y { get; set; }
+        public decimal Y { get; set; }
     }
 }

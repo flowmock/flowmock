@@ -6,6 +6,8 @@ import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 export function MockListPanel(props) {
 
@@ -15,6 +17,9 @@ export function MockListPanel(props) {
 
   return (
     <Box sx={{overflowY: 'scroll', height: 'calc(100vh - 80px)', mt: 1}}>
+      <IconButton component="span" onClick={props.onAdd}>
+        <AddIcon />
+      </IconButton>
       <Table stickyHeader>
         <TableHead>
           <TableRow>

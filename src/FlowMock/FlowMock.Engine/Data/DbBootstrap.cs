@@ -43,7 +43,8 @@ namespace FlowMock.Engine.Data
                 request_body VARCHAR(100000) NULL,
                 response_status INTEGER NULL,
                 response_headers VARCHAR(10000) NULL,
-                response_body VARCHAR(100000) NULL
+                response_body VARCHAR(100000) NULL,
+                mock_id INTEGER NULL
                 );");
             
             await connection.ExecuteAsync(@"CREATE TABLE mocks (

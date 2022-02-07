@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FlowMock.Engine.Models.Trigger
+namespace FlowMock.Engine.Models.Rules
 {
     public class NameOpValue
     {

@@ -31,7 +31,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseMiddleware<HttpProxierMiddleware>();
+app.UseMiddleware<FlowMockMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

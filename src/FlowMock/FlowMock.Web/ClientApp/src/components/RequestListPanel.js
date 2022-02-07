@@ -36,11 +36,11 @@ export function RequestListPanel(props) {
               key={request.id}>
               <TableCell>{request.id}</TableCell>
               <TableCell>{request.responseStatus}</TableCell>
-              <TableCell>{new URL(request.url).host}</TableCell>
+              <TableCell>{request.url ? new URL(request.url).host : 'N/A'}</TableCell>
               <TableCell>{request.requestMethod}</TableCell>
-              <TableCell>{new URL(request.url).pathname}</TableCell>
+              <TableCell>{request.url ?new URL(request.url).pathname : 'N/A'}</TableCell>
               <TableCell>{request.responseBody.length}</TableCell>
-              <TableCell>No</TableCell>
+              <TableCell>{request.mockId ? 'Yes' : 'No'}</TableCell>
             </TableRow>))}
         </TableBody>
       </Table>

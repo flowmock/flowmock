@@ -1,20 +1,23 @@
 # FlowMock
 
+> Warning: This is a work in progress.
+
 ![FlowMock Requests](./docs/images/flowmock_fap_requests.jpg)
+![FlowMock Trigger Flow Builder](./docs/images/flowmock_fap_trigger_flow_builder.jpg)
 
 A flow-based high performance programmable HTTP mocker and proxy.  It is designed to enable testing of difficult to setup scenarios or to support/replace 3rd party sandbox environments in pre-production environment.
 
 ## Features
 
-- Visually define mock behavior using a flow-based programming model.
-- Pass-through proxy with logging.
-- Intuitively convert requests in logs into mocks.
-- Complex trigger condition for mocks.
-- Templatable response using placeholder variables.
-- Single instance can handle mocking multiple endpoints.
-- Adaptable database backend for persistence.
-- FlowMock Admin Portal (FAP) with backing admin API.
-- Extensible hooks for almost everything.
+- [x] Visually define mock behavior using a flow-based programming model.
+- [x] Pass-through proxy with logging.
+- [ ] Intuitively convert requests in logs into mocks.
+- [x] Complex trigger condition for mocks.
+- [ ] Templatable response using placeholder variables.
+- [x] Single instance can handle mocking multiple endpoints.
+- [ ] Adaptable database backend for persistence.
+- [x] FlowMock Admin Portal (FAP) with backing admin API.
+- [ ] Extensible hooks for almost everything.
 
 ## Typical Usage
 

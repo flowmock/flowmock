@@ -14,5 +14,9 @@ namespace FlowMock.Engine.Data
         Task AddRequestAsync(Request request);
         Task<IEnumerable<ProxyMapping>> GetAllProxyMappingsAsync();
         Task SaveProxyMappingsAsync(IEnumerable<ProxyMapping> proxyMappings);
+
+        Task<IEnumerable<Mock>> GetAllMocksAsync();
+        Task AddMockAsync(Mock mock);
+        Task UpdateMockAsync(Mock mock);
     }
 }

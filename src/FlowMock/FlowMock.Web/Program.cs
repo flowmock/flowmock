@@ -15,6 +15,7 @@ builder.Services.AddSingleton<IDataAccess, DataAccess>();
 builder.Services.AddSingleton<HttpRequestMapper>();
 builder.Services.AddSingleton<HttpResponseMapper>();
 builder.Services.AddSingleton<IHttpProxier, HttpProxier>();
+builder.Services.AddSingleton<IHttpMocker, HttpMocker>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddLazyCache();
 
@@ -30,7 +31,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseMiddleware<HttpProxierMiddleware>();
+app.UseMiddleware<FlowMockMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

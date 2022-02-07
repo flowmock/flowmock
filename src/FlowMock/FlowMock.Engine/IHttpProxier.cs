@@ -6,6 +6,6 @@ namespace FlowMock.Engine
 {
     public interface IHttpProxier
     {
-        Task ProxyAsync(HttpContext context);
+        Task HandleAsync(HttpContext context);
     }
 }

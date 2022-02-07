@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import { HeaderList } from './HeaderList';
 import ReactJson from 'react-json-view';
+import { TextField } from '@mui/material';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -35,6 +36,15 @@ export function RequestViewerPanel(props) {
     return <Typography>Select a request to view details.</Typography>
   }
 
+  const isJson = (jsonText) => {
+    try {
+      JSON.parse(jsonText);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   return (
     <Stack sx={{height: 'calc(100vh - 80px)', mt: 1, mr: 1}} direction="column"
       divider={<Divider orientation="horizontal" flexItem />}
@@ -51,7 +61,7 @@ export function RequestViewerPanel(props) {
           <HeaderList headers={props.request.requestHeaders} />
         </TabPanel>
         <TabPanel value={requestTabIndex} index={1}>
-          {props.request.requestBody && <ReactJson src={JSON.parse(props.request.requestBody)} />}
+          {props.request.requestBody && <ReactJson src={props.request.requestBody != '' ? JSON.parse(props.request.requestBody) : ''} />}
           {!props.request.requestBody && <Typography>No request body.</Typography>}
         </TabPanel>
         <TabPanel value={requestTabIndex} index={2}>
@@ -70,7 +80,7 @@ export function RequestViewerPanel(props) {
           <HeaderList headers={props.request.responseHeaders} />
         </TabPanel>
         <TabPanel value={responseTabIndex} index={1}>
-          {props.request.responseBody && <ReactJson src={JSON.parse(props.request.responseBody)} />}
+          {props.request.responseBody && (isJson(props.request.responseBody) ? <ReactJson src={JSON.parse(props.request.responseBody)} /> : <Typography>{props.request.responseBody}</Typography>)}
           {!props.request.responseBody && <Typography>No response body.</Typography>}
         </TabPanel>
         <TabPanel value={responseTabIndex} index={2}>

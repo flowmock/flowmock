@@ -30,7 +30,7 @@ namespace FlowMock.Engine
             _dataAccess = dataAccess;
         }
 
-        public async Task ProxyAsync(HttpContext context)
+        public async Task HandleAsync(HttpContext context)
         {
             // Log entry for the access log, this gets built out as info is available.
             var requestLog = new Request();

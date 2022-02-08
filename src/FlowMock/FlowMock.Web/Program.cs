@@ -19,6 +19,8 @@ builder.Services.AddSingleton<IHttpMocker, HttpMocker>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddLazyCache();
 
+builder.Configuration.AddEnvironmentVariables();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +41,6 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html"); ;
 
-await new DbBootstrap().SetupAsync();
+await new DbBootstrap().SetupAsync(bool.Parse(app.Configuration["INCLUDE_TEST_DATA"]));
 
 app.Run();

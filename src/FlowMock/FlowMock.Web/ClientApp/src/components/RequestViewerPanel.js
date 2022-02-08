@@ -8,6 +8,7 @@ import Divider from '@mui/material/Divider';
 import { HeaderList } from './HeaderList';
 import ReactJson from 'react-json-view';
 import { TextField } from '@mui/material';
+import { CodeBlock, dracula } from "react-code-blocks";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -36,13 +37,21 @@ export function RequestViewerPanel(props) {
     return <Typography>Select a request to view details.</Typography>
   }
 
-  const isJson = (jsonText) => {
-    try {
-      JSON.parse(jsonText);
-      return true;
-    } catch {
-      return false;
+  const formatResponeBody = (headers, rawText) => {
+    if(determineLanguage(headers) === "json") {
+      return JSON.stringify(JSON.parse(rawText), null, 2);
+    } else {
+      return rawText;
     }
+  }
+
+  const determineLanguage = (headers) => {
+    const contentTypeHeader = headers.find(h => h[0] == 'Content-Type');    
+    if(contentTypeHeader[1][0].includes('application/json')) { return "json"; }
+    if(contentTypeHeader[1][0].includes('text/html')) { return "html"; }
+    if(contentTypeHeader[1][0].includes('application/xml')) { return "xml"; }
+    if(contentTypeHeader[1][0].includes('+xml')) { return "xml"; }
+    return "text";
   }
 
   return (
@@ -61,11 +70,15 @@ export function RequestViewerPanel(props) {
           <HeaderList headers={props.request.requestHeaders} />
         </TabPanel>
         <TabPanel value={requestTabIndex} index={1}>
-          {props.request.requestBody && <ReactJson src={props.request.requestBody != '' ? JSON.parse(props.request.requestBody) : ''} />}
+          {props.request.requestBody && <CodeBlock
+            customStyle={{height: 'calc(100vh - 740px)'}}
+            text={formatResponeBody(props.request.requestHeaders, props.request.requestBody)}
+            language={determineLanguage(props.request.requestHeaders)}
+          />}
           {!props.request.requestBody && <Typography>No request body.</Typography>}
         </TabPanel>
         <TabPanel value={requestTabIndex} index={2}>
-          This panel is under construction.
+          
         </TabPanel>
       </Box>
       <Box sx={{ width: '100%', height: '50%' }}>
@@ -80,7 +93,11 @@ export function RequestViewerPanel(props) {
           <HeaderList headers={props.request.responseHeaders} />
         </TabPanel>
         <TabPanel value={responseTabIndex} index={1}>
-          {props.request.responseBody && (isJson(props.request.responseBody) ? <ReactJson src={JSON.parse(props.request.responseBody)} /> : <Typography>{props.request.responseBody}</Typography>)}
+          {props.request.responseBody && <CodeBlock
+            customStyle={{height: 'calc(100vh - 740px)'}}
+            text={formatResponeBody(props.request.responseHeaders, props.request.responseBody)}
+            language={determineLanguage(props.request.responseHeaders)}
+          />}
           {!props.request.responseBody && <Typography>No response body.</Typography>}
         </TabPanel>
         <TabPanel value={responseTabIndex} index={2}>

@@ -46,7 +46,8 @@ export function RequestViewerPanel(props) {
   }
 
   const determineLanguage = (headers) => {
-    const contentTypeHeader = headers.find(h => h[0] == 'Content-Type');    
+    const contentTypeHeader = headers.find(h => h[0] == 'Content-Type');
+    if(!contentTypeHeader) { return "text"; }
     if(contentTypeHeader[1][0].includes('application/json')) { return "json"; }
     if(contentTypeHeader[1][0].includes('text/html')) { return "html"; }
     if(contentTypeHeader[1][0].includes('application/xml')) { return "xml"; }

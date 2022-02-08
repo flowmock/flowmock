@@ -12,15 +12,18 @@ export const RequestBodyComponent = ({ data }) => {
   const [textChangeTimer, setTextChangeTimer] = React.useState(null);
 
   React.useEffect(() => {
-    if(data && data.body) {
-      setOp(data.body.op);
-      setText(data.body.text);
+    if(data.op) {
+      setOp(data.op);
+    }
+    if(data.text) {
+      setText(data.text);
     }
   }, [data])
 
   const handleOpChange = (event) => {
     setOp(event.target.value);
-    data.body = { op: event.target.value, text}
+    data.op = event.target.value;
+    data.text = text;
     data.onChange();
   };
 
@@ -30,7 +33,8 @@ export const RequestBodyComponent = ({ data }) => {
     clearTimeout(textChangeTimer);
     setTextChangeTimer(
       setTimeout(() => {
-        data.body = { op, text: event.target.value}
+        data.op = op;
+        data.text = event.target.value;
         data.onChange();
     }, 1000));
   }

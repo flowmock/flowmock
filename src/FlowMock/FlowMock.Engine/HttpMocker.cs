@@ -27,37 +27,37 @@ namespace FlowMock.Engine
             _appCache = appCache;
         }
 
-        public async Task HandleAsync(HttpContext context, Mock mock)
+        public async Task HandleAsync(Mock mock, MockContext mockContext)
         {
             // Log entry for the access log, this gets built out as info is available.
             var requestLog = new Request();
             requestLog.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            requestLog.RequestMethod = context.Request.Method;
+            requestLog.RequestMethod = mockContext.HttpContext.Request.Method;
             // requestLog.Url = UriHelper.GetDisplayUrl(context.Request);
-            requestLog.RequestHeaders = JsonSerializer.Serialize(context.Request.Headers);
+            requestLog.RequestHeaders = JsonSerializer.Serialize(mockContext.HttpContext.Request.Headers);
             using MemoryStream requestStream = new MemoryStream();
-            await context.Request.Body.CopyToAsync(requestStream);
-            context.Request.Body = requestStream;
+            await mockContext.HttpContext.Request.Body.CopyToAsync(requestStream);
+            mockContext.HttpContext.Request.Body = requestStream;
             requestLog.RequestBody = Encoding.UTF8.GetString(requestStream.ToArray());
-            context.Request.Body.Seek(0, SeekOrigin.Begin);
+            mockContext.HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
 
             var responseHeaders = JsonSerializer.Deserialize<IEnumerable<MockParameter>>(mock.ResponseHeaders);
 
             foreach (var header in responseHeaders)
             {
-                context.Response.Headers.Add(header.Name, new StringValues(header.Value.Split(";").ToArray()));
+                mockContext.HttpContext.Response.Headers.Add(header.Name, new StringValues(header.Value.Split(";").ToArray()));
             }
 
             requestLog.ResponseStatus = mock.ResponseStatus;
-            context.Response.StatusCode = mock.ResponseStatus;
-            requestLog.ResponseHeaders = JsonSerializer.Serialize(context.Response.Headers);
+            mockContext.HttpContext.Response.StatusCode = mock.ResponseStatus;
+            requestLog.ResponseHeaders = JsonSerializer.Serialize(mockContext.HttpContext.Response.Headers);
             requestLog.ResponseBody = mock.ResponseBody;
-            await (new MemoryStream(Encoding.UTF8.GetBytes(mock.ResponseBody ?? ""))).CopyToAsync(context.Response.Body);
+            await (new MemoryStream(Encoding.UTF8.GetBytes(mock.ResponseBody ?? ""))).CopyToAsync(mockContext.HttpContext.Response.Body);
             requestLog.MockId = mock.Id;
             await _dataAccess.AddRequestAsync(requestLog);
         }
 
-        public async Task<Mock> ShouldHandleAsync(HttpContext context)
+        public async Task<(Mock, MockContext)> ShouldHandleAsync(HttpContext context)
         {
             var mocks = await _dataAccess.GetAllMocksAsync();
 
@@ -66,6 +66,14 @@ namespace FlowMock.Engine
                 var trigger = JsonSerializer.Deserialize<TriggerBody>(mock.Trigger);
 
                 Dictionary<string, string> mockState = new Dictionary<string, string>();
+
+                var mockContext = new MockContext()
+                {
+                    HttpContext = context,
+                    MockState = mockState
+                };
+
+                // Setup the initial state with the mock parameters.
                 var mockParameters = JsonSerializer.Deserialize<IEnumerable<MockParameter>>(mock.Parameters);
                 foreach (var param in mockParameters) {
                     mockState.Add(param.Name, param.Value);
@@ -74,7 +82,7 @@ namespace FlowMock.Engine
                 List<INode> nodes = new List<INode>();
                 NodeFactory nodeFactory = new NodeFactory();
 
-                if (trigger?.Elements == null) { return null;  }
+                if (trigger?.Elements == null) { return (null, mockContext);  }
 
                 foreach (var element in trigger.Elements)
                 {
@@ -120,24 +128,20 @@ namespace FlowMock.Engine
 
                 while (!(currentNode is ReturnMockResponseNode || currentNode is ReturnProxyResponseNode || currentNode is DeadEndNode))
                 {
-                    currentNode = await currentNode.GetNextNodeAsync(new Context()
-                    {
-                        HttpContext = context,
-                        MockState = mockState
-                    });
+                    currentNode = await currentNode.GetNextNodeAsync(mockContext);
                 }
 
                 if (currentNode is ReturnMockResponseNode)
                 {
-                    return mock;
+                    return (mock, mockContext);
                 }
                 else
                 {
-                    return null;
+                    return (null, mockContext);
                 }
             }
 
-            return null;
+            return (null, null);
         }
     }
 }

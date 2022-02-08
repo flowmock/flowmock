@@ -14,7 +14,7 @@ namespace FlowMock.Engine.Models.Rules
             _data = JsonSerializer.Deserialize<DelayData>(element.Data);
         }
 
-        public override async Task<INode> GetNextNodeAsync(Context context)
+        public override async Task<INode> GetNextNodeAsync(MockContext context)
         {
             var execOutNode = Connectors.FirstOrDefault(connector => connector.Id == "execOut")?.Connection.Node ?? new DeadEndNode();
 

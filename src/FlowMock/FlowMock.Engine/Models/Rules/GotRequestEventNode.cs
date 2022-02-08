@@ -12,7 +12,7 @@ namespace FlowMock.Engine.Models.Rules
             _element = element;
         }
 
-        public async override Task<INode> GetNextNodeAsync(Context context)
+        public async override Task<INode> GetNextNodeAsync(MockContext context)
         {
             var execOutNode = Connectors.FirstOrDefault(connector => connector.Id == "execOut")?.Connection.Node ?? new DeadEndNode();
             return execOutNode;

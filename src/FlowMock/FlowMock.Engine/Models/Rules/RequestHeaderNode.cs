@@ -19,7 +19,7 @@ namespace FlowMock.Engine.Models.Rules
             _data = JsonSerializer.Deserialize<HeaderData>(element.Data);
         }
 
-        public async override Task<INode> GetNextNodeAsync(Context context)
+        public async override Task<INode> GetNextNodeAsync(MockContext context)
         {
             var trueNode = Connectors.FirstOrDefault(connector => connector.Id == "true")?.Connection.Node ?? new DeadEndNode();
             var falseNode = Connectors.FirstOrDefault(connector => connector.Id == "false")?.Connection.Node ?? new DeadEndNode();

@@ -14,7 +14,7 @@ namespace FlowMock.Engine.Models.Rules
         {
         }
 
-        public override async Task<INode> GetNextNodeAsync(Context context)
+        public override async Task<INode> GetNextNodeAsync(MockContext context)
         {
             var execInNode = Connectors.FirstOrDefault(connector => connector.Id == "execIn")?.Connection.Node ?? new DeadEndNode();
             var aNode = Connectors.FirstOrDefault(connector => connector.Id == "a")?.Connection.Node ?? new DeadEndNode();

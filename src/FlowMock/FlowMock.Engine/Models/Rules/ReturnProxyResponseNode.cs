@@ -13,7 +13,7 @@ namespace FlowMock.Engine.Models.Rules
         {
         }
 
-        public override Task<INode> GetNextNodeAsync(Context context)
+        public override Task<INode> GetNextNodeAsync(MockContext context)
         {
             throw new NotImplementedException();
         }

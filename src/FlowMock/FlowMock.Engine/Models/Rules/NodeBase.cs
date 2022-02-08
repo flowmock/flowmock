@@ -18,6 +18,6 @@ namespace FlowMock.Engine.Models.Rules
         public string Id { get; set; }
         public IList<Connector> Connectors { get; set; }
 
-        public abstract Task<INode> GetNextNodeAsync(Context context);
+        public abstract Task<INode> GetNextNodeAsync(MockContext context);
     }
 }

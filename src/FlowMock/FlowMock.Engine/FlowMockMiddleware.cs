@@ -38,10 +38,10 @@ namespace FlowMock.Engine
                 return;
             }
 
-            var mock = await _httpMocker.ShouldHandleAsync(context);
+            (var mock, var mockContext) = await _httpMocker.ShouldHandleAsync(context);
             if(mock != null)
             {
-                await _httpMocker.HandleAsync(context, mock);
+                await _httpMocker.HandleAsync(mock, mockContext);
             }
             else
             {

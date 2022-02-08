@@ -61,9 +61,20 @@ In the diagram above, mocks has been setup for service A.  Target service reques
 
 FlowMock is designed to be a long running service in an environment.  It is available as a Docker image:
 
-https://hub.docker.com/r/vornet1/flowmock
+https://hub.docker.com/r/flowmock/flowmock
 
-TODO: Kubernetes Pods
+```
+# Start the service with test data.
+docker run -it -p 8080:80 -d -e INCLUDE_TEST_DATA=true flowmock/flowmock
+
+# Sample requests
+curl http://localhost:8080/proxy/chucknorris/jokes/random
+curl http://localhost:8080/proxy/excuse
+
+# Navigate to the FAP in a web browser.
+http://localhost:8080/
+
+```
 
 ## Settings
 Proxy can be configured on the Settings page.

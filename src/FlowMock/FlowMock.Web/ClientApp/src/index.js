@@ -16,6 +16,7 @@ ReactDOM.render(
   <BrowserRouter basename={baseUrl}>
     <Routes>
       <Route path="/" element={<App />} >
+        <Route index element={<RequestViewPage />} />
         <Route path='requests' element={<RequestViewPage />} />
         <Route path='mocks' element={<MockViewPage />} />
         <Route path='settings' element={<SettingsPage />} />

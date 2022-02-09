@@ -18,5 +18,6 @@ namespace FlowMock.Engine.Data
         Task<IEnumerable<Mock>> GetAllMocksAsync();
         Task AddMockAsync(Mock mock);
         Task UpdateMockAsync(Mock mock);
+        Task DeleteMockAsync(long id);
     }
 }

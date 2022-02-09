@@ -6,9 +6,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import { HeaderList } from './HeaderList';
-import ReactJson from 'react-json-view';
-import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 import { CodeBlock, dracula } from "react-code-blocks";
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -79,7 +79,11 @@ export function RequestViewerPanel(props) {
           {!props.request.requestBody && <Typography>No request body.</Typography>}
         </TabPanel>
         <TabPanel value={requestTabIndex} index={2}>
-          
+          <Box sx={{m:1}}>
+            <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={props.onCreateMockClick}>
+              Create Mock from Request
+            </Button>
+          </Box>
         </TabPanel>
       </Box>
       <Box sx={{ width: '100%', height: '50%' }}>

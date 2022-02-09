@@ -16,7 +16,10 @@ import { ReturnProxyComponent } from './flow_components/ReturnProxyComponent';
 import { TwoAndComponent } from './flow_components/TwoAndComponent';
 import { TwoOrComponent } from './flow_components/TwoOrComponent';
 import { DelayComponent } from './flow_components/DelayComponent';
-  
+import { RequestHttpVerbComponent } from './flow_components/RequestHttpVerbComponent';  
+import { RequestUrlComponent } from './flow_components/RequestUrlComponent';
+import { FourAndComponent } from './flow_components/FourAndComponent';
+
 const nodeTypes = {
   gotRequest: GotRequestComponent,
   requestHeader: RequestHeaderComponent,
@@ -25,8 +28,11 @@ const nodeTypes = {
   returnProxyResponse: ReturnProxyComponent,
   queryString: QueryStringComponent,
   twoAnd: TwoAndComponent,
+  fourAnd: FourAndComponent,
   twoOr: TwoOrComponent,
-  delay: DelayComponent
+  delay: DelayComponent,
+  requestHttpVerb: RequestHttpVerbComponent,
+  requestUrl: RequestUrlComponent
 };
   
 export function MockTriggerEditor(props) {
@@ -128,12 +134,15 @@ export function MockTriggerEditor(props) {
         <MenuItem onClick={() => handleAddElement('returnMockResponse')}>Return Mock Response</MenuItem>
         <MenuItem onClick={() => handleAddElement('returnProxyResponse')}>Return Proxy Response</MenuItem>
         <Divider><Typography variant='caption'>Requests</Typography></Divider>
+        <MenuItem onClick={() => handleAddElement('requestUrl')}>Request Url</MenuItem>
+        <MenuItem onClick={() => handleAddElement('requestHttpVerb')}>Request HTTP Verb</MenuItem>
         <MenuItem onClick={() => handleAddElement('requestHeader')}>Request Header</MenuItem>
         <MenuItem onClick={() => handleAddElement('queryString')}>QueryString</MenuItem>
         <MenuItem onClick={() => handleAddElement('requestBody')}>Body</MenuItem>
         <Divider><Typography variant='caption'>Conditions</Typography></Divider>
-        <MenuItem onClick={() => handleAddElement('twoAnd')}>AND</MenuItem>
-        <MenuItem onClick={() => handleAddElement('twoOr')}>OR</MenuItem>
+        <MenuItem onClick={() => handleAddElement('twoAnd')}>2-AND</MenuItem>
+        <MenuItem onClick={() => handleAddElement('twoOr')}>2-OR</MenuItem>
+        <MenuItem onClick={() => handleAddElement('fourAnd')}>4-AND</MenuItem>
         <Divider><Typography variant='caption'>Utilities</Typography></Divider>
         <MenuItem onClick={() => handleAddElement('delay')}>Delay</MenuItem>
       </Menu>

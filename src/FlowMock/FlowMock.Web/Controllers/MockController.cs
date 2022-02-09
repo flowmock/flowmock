@@ -29,6 +29,12 @@ namespace FlowMock.Web.Controllers
             await _dataAccess.AddMockAsync(mock);
         }
 
+        [HttpDelete("{id}")]
+        public async Task Delete(long id)
+        {
+            await _dataAccess.DeleteMockAsync(id);
+        }
+
         [HttpPut("{id}")]
         public async Task Put(long id, [FromBody] Mock mock)
         {

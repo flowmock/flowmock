@@ -21,7 +21,7 @@ export const TwoAndComponent = ({ data }) => {
         <Handle type="target" id="a" position={Position.Left} style={{ top: '50%', borderRadius: 0 }} >
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">a</div>
         </Handle>
-        <Handle type="target" id="b" label='B' position={Position.Left} style={{ top: '80%', borderRadius: 0 }}>
+        <Handle type="target" id="b" position={Position.Left} style={{ top: '80%', borderRadius: 0 }}>
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px' }} variant="subtitle2" component="div">b</div>
         </Handle>
         <Typography sx={{lineHeight: '80px'}} variant="body1" component="div">AND</Typography>

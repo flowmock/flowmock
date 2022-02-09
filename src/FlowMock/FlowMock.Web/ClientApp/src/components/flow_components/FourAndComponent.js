@@ -3,7 +3,7 @@ import { Handle, Position } from 'react-flow-renderer';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export const TwoOrComponent = ({ data }) => {
+export const FourAndComponent = ({ data }) => {
     return (
       <Box sx={{
         padding: '10px',
@@ -18,13 +18,19 @@ export const TwoOrComponent = ({ data }) => {
         <Handle type="target" id="execIn" position={Position.Left} style={{ top: '20%', borderRadius: 0 }}>
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">ex</div>
         </Handle>
-        <Handle type="target" id="a" position={Position.Left} style={{ top: '50%', borderRadius: 0 }} >
+        <Handle type="target" id="a" position={Position.Left} style={{ top: '40%', borderRadius: 0 }} >
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">a</div>
         </Handle>
-        <Handle type="target" id="b" position={Position.Left} style={{ top: '80%', borderRadius: 0 }}>
+        <Handle type="target" id="b" position={Position.Left} style={{ top: '55%', borderRadius: 0 }}>
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px' }} variant="subtitle2" component="div">b</div>
         </Handle>
-        <Typography sx={{lineHeight: '80px'}} variant="body1" component="div">OR</Typography>
+        <Handle type="target" id="c" position={Position.Left} style={{ top: '70%', borderRadius: 0 }} >
+          <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">c</div>
+        </Handle>
+        <Handle type="target" id="d" position={Position.Left} style={{ top: '85%', borderRadius: 0 }}>
+          <div style={{ position: 'absolute', bottom: '-5px', left: '16px' }} variant="subtitle2" component="div">d</div>
+        </Handle>
+        <Typography sx={{lineHeight: '80px'}} variant="body1" component="div">AND</Typography>
         <Handle
           type="source"
           position={Position.Right}
@@ -44,4 +50,3 @@ export const TwoOrComponent = ({ data }) => {
       </Box>
     );
   };
-  

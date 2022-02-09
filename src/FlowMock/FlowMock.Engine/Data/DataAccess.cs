@@ -123,5 +123,18 @@ namespace FlowMock.Engine.Data
                 throw ex;
             }
         }
+
+        public async Task DeleteMockAsync(long id)
+        {
+            try
+            {
+                using var connection = new SqliteConnection(ConnectionString);
+                await connection.ExecuteAsync(@"DELETE FROM mocks WHERE id=@Id;", new { Id = id });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

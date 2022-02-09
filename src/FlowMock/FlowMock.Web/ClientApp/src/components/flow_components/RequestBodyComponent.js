@@ -67,7 +67,7 @@ export const RequestBodyComponent = ({ data }) => {
         <MenuItem value={'endsWith'}>EndsWith</MenuItem>
         <MenuItem value={'regex'}>RegExMatch</MenuItem>
       </Select>
-      <TextField sx={{ width: '100%'}} multiline rows={4} label="Field" variant="outlined" value={text} onChange={handleTextChange} />
+      <TextField sx={{ width: '100%'}} multiline rows={4} label="Body" variant="outlined" value={text} onChange={handleTextChange} />
       <Handle
         type="source"
         position={Position.Right}

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FlowMock.Engine.Models.Rules
+namespace FlowMock.Engine.Models.Rules.Nodes
 {
     [NodeType("gotRequest")]
     public class GotRequestEventNode : NodeBase

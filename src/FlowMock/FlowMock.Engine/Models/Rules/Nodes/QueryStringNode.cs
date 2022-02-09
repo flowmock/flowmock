@@ -4,10 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace FlowMock.Engine.Models.Rules
+namespace FlowMock.Engine.Models.Rules.Nodes
 {
+    public class QueryStringData
+    {
+        [JsonPropertyName("queryStrings")]
+        public IEnumerable<NameOpValue> QueryStrings { get; set; }
+    }
+
     [NodeType("queryString")]
     public class QueryStringNode : NodeBase
     {

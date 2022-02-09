@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowMock.Engine.Models.Rules
+namespace FlowMock.Engine.Models.Rules.Nodes
 {
     [NodeType("returnMockResponse")]
     public class ReturnMockResponseNode : NodeBase

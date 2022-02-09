@@ -1,13 +1,18 @@
 ﻿using FlowMock.Engine.Models.Trigger;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace FlowMock.Engine.Models.Rules
+namespace FlowMock.Engine.Models.Rules.Nodes
 {
+    public class HeaderData
+    {
+        [JsonPropertyName("headers")]
+        public IEnumerable<NameOpValue> Headers { get; set; }
+    }
+
     [NodeType("requestHeader")]
     public class RequestHeaderNode : NodeBase
     {

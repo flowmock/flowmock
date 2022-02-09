@@ -5,22 +5,22 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const httpVerbs = [
+const httpMethods = [
   "GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"
 ]
 
-export const RequestHttpVerbComponent = ({ data }) => {
-  const [verb, setVerb] = React.useState('');
+export const RequestHttpMethodComponent = ({ data }) => {
+  const [method, setMethod] = React.useState('');
 
   React.useEffect(() => {
-    if(data && data.verb) {
-      setVerb(data.verb);
+    if(data && data.method) {
+      setMethod(data.method);
     }
   }, [data])
 
-  const handleVerbChange = (_, newValue) => {    
-    setVerb(newValue);
-    data.verb = newValue;
+  const handleMethodChange = (_, newValue) => {    
+    setMethod(newValue);
+    data.method = newValue;
     data.onChange();
   }
 
@@ -42,11 +42,11 @@ export const RequestHttpVerbComponent = ({ data }) => {
       </Handle>
       <Autocomplete
         disablePortal
-        options={httpVerbs}
+        options={httpMethods}
         sx={{ width: 300 }}
-        value={verb}
-        onChange={handleVerbChange}
-        renderInput={(params) => <TextField {...params} label="HTTP Verb" />}
+        value={method}
+        onChange={handleMethodChange}
+        renderInput={(params) => <TextField {...params} label="HTTP Method" />}
       />
       <Handle
         type="source"

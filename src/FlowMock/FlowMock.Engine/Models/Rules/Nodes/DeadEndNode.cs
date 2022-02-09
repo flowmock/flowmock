@@ -1,10 +1,6 @@
-﻿using FlowMock.Engine.Models.Trigger;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace FlowMock.Engine.Models.Rules
+namespace FlowMock.Engine.Models.Rules.Nodes
 {
     public class DeadEndNode : NodeBase
     {

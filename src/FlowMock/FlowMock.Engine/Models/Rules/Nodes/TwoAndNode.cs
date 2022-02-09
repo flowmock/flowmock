@@ -1,11 +1,8 @@
 ﻿using FlowMock.Engine.Models.Trigger;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowMock.Engine.Models.Rules
+namespace FlowMock.Engine.Models.Rules.Nodes
 {
     [NodeType("twoAnd")]
     public class TwoAndNode : NodeBase

@@ -1,6 +1,7 @@
 ﻿using FlowMock.Engine.Data;
 using FlowMock.Engine.Models;
 using FlowMock.Engine.Models.Rules;
+using FlowMock.Engine.Models.Rules.Nodes;
 using FlowMock.Engine.Models.Trigger;
 using LazyCache;
 using Microsoft.AspNetCore.Http;
@@ -20,11 +21,13 @@ namespace FlowMock.Engine
     {
         private readonly IDataAccess _dataAccess;
         private readonly IAppCache _appCache;
+        private readonly HttpRequestMapper _requestMapper;
 
-        public HttpMocker(IDataAccess dataAccess, IAppCache appCache)
+        public HttpMocker(IDataAccess dataAccess, IAppCache appCache, HttpRequestMapper requestMapper)
         {
             _dataAccess = dataAccess;
             _appCache = appCache;
+            _requestMapper = requestMapper;
         }
 
         public async Task HandleAsync(Mock mock, MockContext mockContext)
@@ -70,7 +73,8 @@ namespace FlowMock.Engine
                 var mockContext = new MockContext()
                 {
                     HttpContext = context,
-                    MockState = mockState
+                    MockState = mockState,
+                    RequestMapper = _requestMapper,
                 };
 
                 // Setup the initial state with the mock parameters.
@@ -103,6 +107,12 @@ namespace FlowMock.Engine
 
                     var sourceNode = nodes.FirstOrDefault(node => node.Id == element.Source);
                     var targetNode = nodes.FirstOrDefault(node => node.Id == element.Target);
+
+                    if(sourceNode == null || targetNode == null)
+                    {
+                        // connection isn't complete.
+                        continue;
+                    }
 
                     var sourceConnector = sourceNode.Connectors.FirstOrDefault(connector => connector.Id == element.SourceHandle);
                     var targetConnector = targetNode.Connectors.FirstOrDefault(connector => connector.Id == element.TargetHandle);

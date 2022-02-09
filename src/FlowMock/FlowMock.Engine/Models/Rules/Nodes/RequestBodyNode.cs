@@ -1,14 +1,22 @@
 ﻿using FlowMock.Engine.Models.Trigger;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace FlowMock.Engine.Models.Rules
+namespace FlowMock.Engine.Models.Rules.Nodes
 {
+    public class RequestBodyData
+    {
+        [JsonPropertyName("op")]
+        public string Op { get; set; }
+
+        [JsonPropertyName("text")]
+        public string Text { get; set; }
+    }
+
     [NodeType("requestBody")]
     public class RequestBodyNode : NodeBase
     {
@@ -37,7 +45,12 @@ namespace FlowMock.Engine.Models.Rules
                 text = text.Replace("{{" + envVar.Key + "}}", envVar.Value);
             }
 
-            return _nameOpValueEvaluator.Evaluate(bodyString, _data.Op, text) ? trueNode : falseNode;            
+            return _nameOpValueEvaluator.Evaluate(NormalizeNewline(bodyString), _data.Op, NormalizeNewline(text)) ? trueNode : falseNode;            
+        }
+
+        private static string NormalizeNewline(string rawString)
+        {
+            return rawString.Replace("\r\n", "\n");
         }
     }
 }

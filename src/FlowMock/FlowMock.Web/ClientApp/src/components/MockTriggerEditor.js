@@ -16,7 +16,7 @@ import { ReturnProxyComponent } from './flow_components/ReturnProxyComponent';
 import { TwoAndComponent } from './flow_components/TwoAndComponent';
 import { TwoOrComponent } from './flow_components/TwoOrComponent';
 import { DelayComponent } from './flow_components/DelayComponent';
-import { RequestHttpVerbComponent } from './flow_components/RequestHttpVerbComponent';  
+import { RequestHttpMethodComponent } from './flow_components/RequestHttpMethodComponent';  
 import { RequestUrlComponent } from './flow_components/RequestUrlComponent';
 import { FourAndComponent } from './flow_components/FourAndComponent';
 
@@ -31,7 +31,7 @@ const nodeTypes = {
   fourAnd: FourAndComponent,
   twoOr: TwoOrComponent,
   delay: DelayComponent,
-  requestHttpVerb: RequestHttpVerbComponent,
+  requestHttpMethod: RequestHttpMethodComponent,
   requestUrl: RequestUrlComponent
 };
   
@@ -134,8 +134,8 @@ export function MockTriggerEditor(props) {
         <MenuItem onClick={() => handleAddElement('returnMockResponse')}>Return Mock Response</MenuItem>
         <MenuItem onClick={() => handleAddElement('returnProxyResponse')}>Return Proxy Response</MenuItem>
         <Divider><Typography variant='caption'>Requests</Typography></Divider>
-        <MenuItem onClick={() => handleAddElement('requestUrl')}>Request Url</MenuItem>
-        <MenuItem onClick={() => handleAddElement('requestHttpVerb')}>Request HTTP Verb</MenuItem>
+        <MenuItem onClick={() => handleAddElement('requestUrl')}>Request URL</MenuItem>
+        <MenuItem onClick={() => handleAddElement('requestHttpMethod')}>Request HTTP Method</MenuItem>
         <MenuItem onClick={() => handleAddElement('requestHeader')}>Request Header</MenuItem>
         <MenuItem onClick={() => handleAddElement('queryString')}>QueryString</MenuItem>
         <MenuItem onClick={() => handleAddElement('requestBody')}>Body</MenuItem>

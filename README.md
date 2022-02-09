@@ -11,7 +11,7 @@ A flow-based high performance programmable HTTP mocker and proxy.  It is designe
 
 - [x] Visually define mock behavior using a flow-based programming model.
 - [x] Pass-through proxy with logging.
-- [ ] Intuitively convert requests in logs into mocks.
+- [X] Intuitively convert requests in logs into mocks.
 - [x] Complex trigger condition for mocks.
 - [ ] Templatable response using placeholder variables.
 - [x] Single instance can handle mocking multiple endpoints.

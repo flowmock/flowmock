@@ -13,6 +13,7 @@ const commonHeaders = [
   { label: 'Referer' },
   { label: 'Connection' },
   { label: 'Cache-Control' },
+  { label: 'Content-Type' },  
 ]
 
 export const RequestHeaderComponent = ({ data }) => {

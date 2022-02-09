@@ -1,17 +1,19 @@
 import * as React from 'react';
+import axios from 'axios';
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-import axios from 'axios';
 
 import { RequestListPanel  } from '../components/RequestListPanel';
 import { RequestViewerPanel } from '../components/RequestViewerPanel';
-
+  
 export function RequestViewPage() {
   const [requests, setRequests] = React.useState([]);
   const [activeRequest, setActiveRequest] = React.useState(null);
-
+  const navigate = useNavigate();
+  
   const fetchRequests = async () => {
     let response = await axios.get('/api/request');
     let requests = await response.data;
@@ -72,7 +74,7 @@ export function RequestViewPage() {
           {
             "id":"requestHttpMethod-PDO0B2NP7pOFXLB",
             "type":"requestHttpMethod","position":{"x":134.99999999999994,"y":390},
-            "data":{"verb":activeRequest.requestMethod}
+            "data":{"method":activeRequest.requestMethod}
           },
           {
             "source":"gotRequest-xhfpfqU6hVLrp2V",
@@ -140,7 +142,9 @@ export function RequestViewPage() {
     sendMock.trigger = JSON.stringify(mock.trigger);
     sendMock.responseHeaders = JSON.stringify(mock.responseHeaders);
   
-    await axios.post(`/api/mock`, sendMock);     
+    await axios.post(`/api/mock`, sendMock);
+    
+    navigate('/mocks');
   }
 
   const handleOnRequestListSelected = (request) => {

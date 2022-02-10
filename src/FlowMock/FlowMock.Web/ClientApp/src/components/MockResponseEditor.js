@@ -49,42 +49,41 @@ export function MockResponseEditor(props) {
       component="form"
       noValidate
       autoComplete="off"
-      spacing={1}
+      spacing={2}
       mt={1}
-    >
+    >      
       <TextField label="Status" variant="outlined" value={props.mock.responseStatus} onChange={handleStatusChange} />
+      <TextField label="Body" multiline rows={4} variant="outlined" value={props.mock.responseBody} onChange={handleBodyChange} />
       <TableContainer component={Paper}>
-      <Table sx={{width: '100%'}}>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{width: '0px'}}></TableCell>
-            <TableCell>Headers</TableCell>
-            <TableCell>Value</TableCell>            
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.mock.responseHeaders.map((header) => (
-            <TableRow key={header.name}>
-              <TableCell>
-                <IconButton component="span" onClick={() => handleRemoveClick(header)}>
-                  <RemoveIcon />
+        <Table sx={{width: '100%'}}>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{width: '0px'}}></TableCell>
+              <TableCell>Headers</TableCell>
+              <TableCell>Value</TableCell>            
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.mock.responseHeaders.map((header) => (
+              <TableRow key={header.name}>
+                <TableCell>
+                  <IconButton component="span" onClick={() => handleRemoveClick(header)}>
+                    <RemoveIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell><TextField label="Name" variant="outlined" value={header.name} fullWidth onChange={(e) => handleHeaderNameChange(e, header)} /></TableCell>
+                <TableCell><TextField label="Value" variant="outlined" value={header.value} fullWidth onChange={(e) => handleHeaderValueChange(e, header)} /></TableCell>
+              </TableRow>
+            ))}
+            <TableRow>
+              <TableCell colSpan={3}>
+                <IconButton component="span" onClick={handleAddClick}>
+                  <AddIcon />
                 </IconButton>
               </TableCell>
-              <TableCell><TextField label="Name" variant="outlined" value={header.name} fullWidth onChange={(e) => handleHeaderNameChange(e, header)} /></TableCell>
-              <TableCell><TextField label="Value" variant="outlined" value={header.value} fullWidth onChange={(e) => handleHeaderValueChange(e, header)} /></TableCell>
             </TableRow>
-          ))}
-          <TableRow>
-            <TableCell colSpan={3}>
-              <IconButton component="span" onClick={handleAddClick}>
-                <AddIcon />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+          </TableBody>
+        </Table>
     </TableContainer>
-      <TextField label="Body" multiline rows={4} variant="outlined" value={props.mock.responseBody} onChange={handleBodyChange} />
-    </Stack>
-  );
+  </Stack>);
 }

@@ -34,7 +34,7 @@ export function RequestViewerPanel(props) {
   const [responseTabIndex, setResponseTabIndex] = React.useState(0);
 
   if (!props.request) {
-    return <Typography>Select a request to view details.</Typography>
+    return <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>Select a request to view details.</Typography></Box>
   }
 
   const formatResponeBody = (headers, rawText) => {
@@ -91,7 +91,6 @@ export function RequestViewerPanel(props) {
           <Tabs value={responseTabIndex} onChange={(e, tabIndex) => setResponseTabIndex(tabIndex)}>
             <Tab label="Headers" />
             <Tab label="Body" />
-            <Tab label="Mock" />
           </Tabs>
         </Box>
         <TabPanel value={responseTabIndex} index={0}>
@@ -104,9 +103,6 @@ export function RequestViewerPanel(props) {
             language={determineLanguage(props.request.responseHeaders)}
           />}
           {!props.request.responseBody && <Typography>No response body.</Typography>}
-        </TabPanel>
-        <TabPanel value={responseTabIndex} index={2}>
-          This panel is under construction.
         </TabPanel>
       </Box>
     </Stack>

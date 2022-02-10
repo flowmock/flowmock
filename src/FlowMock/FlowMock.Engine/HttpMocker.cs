@@ -51,6 +51,8 @@ namespace FlowMock.Engine
                 mockContext.HttpContext.Response.Headers.Add(header.Name, new StringValues(header.Value.Split(";").ToArray()));
             }
 
+            var clientRequest = await _requestMapper.MapAsync(mockContext.HttpContext.Request);
+            requestLog.Url = clientRequest.RequestUri.AbsoluteUri.ToString();
             requestLog.ResponseStatus = mock.ResponseStatus;
             mockContext.HttpContext.Response.StatusCode = mock.ResponseStatus;
             requestLog.ResponseHeaders = JsonSerializer.Serialize(mockContext.HttpContext.Response.Headers);

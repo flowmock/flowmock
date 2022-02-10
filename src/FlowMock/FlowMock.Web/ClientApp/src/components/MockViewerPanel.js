@@ -42,7 +42,7 @@ export function MockViewerPanel(props) {
   }
 
   if (!props.mock) {
-    return <Typography>Select a mock to view details.</Typography>
+    return <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>Select a mock to view details.</Typography></Box>
   }
 
   const handleSetTrigger = (trigger) => {    

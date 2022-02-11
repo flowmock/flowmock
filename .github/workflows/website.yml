@@ -4,6 +4,10 @@ on:
   push:
     paths:
       - 'website/**'
+    branches:
+      - 'main'
+      - 'develop'
+      - 'releases/**'
 
 jobs:
   web-deploy:

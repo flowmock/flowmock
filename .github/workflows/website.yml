@@ -1,0 +1,36 @@
+on: 
+  push:
+    paths:
+    - 'website/**'
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./website/flowmock
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 17
+      uses: actions/setup-node@v2
+      with:
+        node-version: '17'
+      
+    - name: 🔨 Build Project
+      run: |
+        npm install
+        npm run build
+    
+    - name: List output files
+      run: find build/ -print
+      
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        server: ftp.planetconflict.com
+        username: ${{ secrets.WEBSITE_FTP_USER }}
+        password: ${{ secrets.WEBSITE_FTP_PASS }}
+        local-dir: build/

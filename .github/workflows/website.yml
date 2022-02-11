@@ -33,4 +33,4 @@ jobs:
         server: ftp.planetconflict.com
         username: ${{ secrets.WEBSITE_FTP_USER }}
         password: ${{ secrets.WEBSITE_FTP_PASS }}
-        local-dir: build/
+        local-dir: ./website/flowmock/build/

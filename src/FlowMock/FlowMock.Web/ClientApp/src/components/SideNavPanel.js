@@ -16,12 +16,12 @@ export function SideNavPanel() {
   return (
     <List>
       <Tooltip title="Requests" placement="right">
-        <ListItem button selected={location.pathname==='/' || location.pathname==='/requests'} onClick={() => navigate('/requests')}>
+        <ListItem button selected={location.pathname==='/' || location.pathname.startsWith('/requests')} onClick={() => navigate('/requests')}>
           <ManageSearchIcon sx={{mt:1,mb:1}} />
         </ListItem>
       </Tooltip>
       <Tooltip title="Mocks" placement="right">
-        <ListItem button selected={location.pathname==='/mocks'} onClick={() => navigate('/mocks')}>
+        <ListItem button selected={location.pathname.startsWith('/mocks')} onClick={() => navigate('/mocks')}>
           <AccountTreeIcon sx={{mt:1,mb:1}} />
         </ListItem>
       </Tooltip>

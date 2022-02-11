@@ -5,9 +5,11 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
+import { RequestViewerPanel } from './components/RequestViewerPanel'
 import { RequestViewPage } from './pages/RequestViewPage';
 import { MockViewPage } from './pages/MockViewPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { MockViewerPanel } from './components/MockViewerPanel';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
@@ -17,8 +19,14 @@ ReactDOM.render(
     <Routes>
       <Route path="/" element={<App />} >
         <Route index element={<RequestViewPage />} />
-        <Route path='requests' element={<RequestViewPage />} />
-        <Route path='mocks' element={<MockViewPage />} />
+        <Route path='requests' element={<RequestViewPage />}>
+          <Route index element={<RequestViewerPanel />} />
+          <Route path=':requestId' element={<RequestViewerPanel />} />
+        </Route>
+        <Route path='mocks' element={<MockViewPage />}>
+          <Route index element={<MockViewerPanel />} />
+          <Route path=':mockId' element={<MockViewerPanel />} />
+        </Route>
         <Route path='settings' element={<SettingsPage />} />
       </Route>
     </Routes>

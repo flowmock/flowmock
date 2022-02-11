@@ -1,4 +1,7 @@
 import * as React from 'react';
+import axios from 'axios';
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -31,27 +34,61 @@ function TabPanel(props) {
 }
 
 export function MockViewerPanel(props) {
+  const params = useParams();
+  const navigate = useNavigate();
+  const [mock, setMock] = React.useState(null);
+  const [reactflowInstance, setReactflowInstance] = React.useState(null);
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleSaveClick = async () => {
-    props.onSave(props.mock);
+    let sendMock = {...mock}
+
+    sendMock.parameters = JSON.stringify(mock.parameters);
+
+    if(reactflowInstance) {
+      sendMock.trigger = JSON.stringify(reactflowInstance.toObject());
+    } else {
+      sendMock.trigger = JSON.stringify(mock.trigger);
+    }
+
+    sendMock.responseHeaders = mock.responseHeaders ? JSON.stringify(mock.responseHeaders) : "[]";
+
+    await axios.put(`/api/mock/${sendMock.id}`, sendMock);
   }
 
   const handleDeleteClick = async () => {
-    props.onDelete(props.mock);
+    await axios.delete(`/api/mock/${mock.id}`);
+    navigate(`/mocks/`);
   }
 
-  if (!props.mock) {
+  const fetchMock = async (id) => {
+    let response = await axios.get(`/api/mock/${id}`);
+    let mock = await response.data;
+    mock.parameters = JSON.parse(mock.parameters);
+    mock.trigger = JSON.parse(mock.trigger);
+    mock.responseHeaders = JSON.parse(mock.responseHeaders);
+    setMock(mock);
+  }
+
+  React.useEffect(() => {
+    if(params.mockId) {
+      fetchMock(params.mockId);
+    } else {
+      setMock(null);
+    }
+  }, [params.mockId]);
+
+  if (!mock) {
     return <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>Select a mock to view details.</Typography></Box>
   }
 
   const handleSetTrigger = (trigger) => {    
-    props.mock.trigger = trigger;
-    props.setMock(props.mock);
+    mock.trigger = trigger;
+    setMock(mock);
   }
 
   const handleReactFlowinstanceLoad = (reactflowInstance) => {
-    props.onReactFlowInstanceLoad(reactflowInstance);
+    setReactflowInstance(reactflowInstance);
   }
 
   return (
@@ -72,13 +109,13 @@ export function MockViewerPanel(props) {
         </Tabs>
       </Box>
       <TabPanel value={tabIndex} index={0}>
-        <MockSettingsEditor mock={props.mock} setMock={props.setMock} />
+        <MockSettingsEditor mock={mock} setMock={setMock} />
       </TabPanel>
       <TabPanel sx={{ width: '100%', height: '100%' }} value={tabIndex} index={1}>
-        <MockTriggerEditor trigger={props.mock.trigger} setTrigger={handleSetTrigger} onReactFlowInstanceLoad={handleReactFlowinstanceLoad} />
+        <MockTriggerEditor trigger={mock.trigger} setTrigger={handleSetTrigger} onReactFlowInstanceLoad={handleReactFlowinstanceLoad} />
       </TabPanel>
       <TabPanel value={tabIndex} index={2}>
-        <MockResponseEditor mock={props.mock} setMock={props.setMock} />
+        <MockResponseEditor mock={mock} setMock={setMock} />
       </TabPanel>
     </Box>
   );

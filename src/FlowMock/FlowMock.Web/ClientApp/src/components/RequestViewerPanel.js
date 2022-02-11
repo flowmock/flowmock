@@ -1,4 +1,7 @@
 import * as React from 'react';
+import axios from 'axios';
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -10,9 +13,179 @@ import Button from '@mui/material/Button';
 import { CodeBlock, dracula } from "react-code-blocks";
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
+const generateGetTrigger = (request) => {
+  return {
+    "elements": [
+      {
+        "id":"gotRequest-xhfpfqU6hVLrp2V",
+        "type":"gotRequest",
+        "position":{"x":480,"y":180},
+        "data":{}
+      },
+      {
+        "id":"returnMockResponse-NHIJyWxrabi9Ae9",
+        "type":"returnMockResponse",
+        "position":{"x":1155,"y":285},
+        "data":{}
+      },
+      {
+        "id":"requestUrl-cgwFNJiz7CEPCc6",
+        "type":"requestUrl",
+        "position":{"x":135,"y":300},
+        "data":{"op":"contains","text":new URL(request.url).pathname}
+      },
+      {
+        "id":"requestHttpMethod-PDO0B2NP7pOFXLB",
+        "type":"requestHttpMethod",
+        "position":{"x":134.99999999999994,"y":390},
+        "data":{"method":request.requestMethod}
+      },
+      {
+        "id":"twoAnd-ta7Au9JDXXn65NZ",
+        "type":"twoAnd",
+        "position":{"x":855,"y":285},
+        "data":{}
+      },
+      {
+        "source":"requestHttpMethod-PDO0B2NP7pOFXLB",
+        "sourceHandle":"true",
+        "target":"twoAnd-ta7Au9JDXXn65NZ",
+        "targetHandle":"b",
+        "id":"reactflow__edge-requestHttpMethod-PDO0B2NP7pOFXLBtrue-twoAnd-ta7Au9JDXXn65NZb",
+        "type":"default"
+      },
+      {
+        "source":"requestUrl-cgwFNJiz7CEPCc6",
+        "sourceHandle":"true",
+        "target":"twoAnd-ta7Au9JDXXn65NZ",
+        "targetHandle":"a",
+        "id":"reactflow__edge-requestUrl-cgwFNJiz7CEPCc6true-twoAnd-ta7Au9JDXXn65NZa",
+        "type":"default"
+      },
+      {
+        "source":"gotRequest-xhfpfqU6hVLrp2V",
+        "sourceHandle":"execOut",
+        "target":"twoAnd-ta7Au9JDXXn65NZ",
+        "targetHandle":"execIn",
+        "id":"reactflow__edge-gotRequest-xhfpfqU6hVLrp2VexecOut-twoAnd-ta7Au9JDXXn65NZexecIn",
+        "type":"default"
+      },
+      {
+        "source":"twoAnd-ta7Au9JDXXn65NZ",
+        "sourceHandle":"true",
+        "target":"returnMockResponse-NHIJyWxrabi9Ae9",
+        "targetHandle":"execIn",
+        "id":"reactflow__edge-twoAnd-ta7Au9JDXXn65NZtrue-returnMockResponse-NHIJyWxrabi9Ae9execIn",
+        "type":"default"
+      }
+    ],
+    "position":[-114.32801276935334,50.67318435754197],
+    "zoom":1.5802075019952113}
+}
+
+const generatePostTrigger = (request) => {
+  return {
+    "elements": [
+      {
+        "id":"gotRequest-xhfpfqU6hVLrp2V",
+        "type":"gotRequest",
+        "position":{"x":480,"y":180},
+        "data":{}
+      },
+      {
+        "id":"requestBody-DcjlDrJe07YGTSb",
+        "type":"requestBody",
+        "position":{"x":135,"y":570},
+        "data":{"op":"equals","text":request.requestBody}
+      },
+      {
+        "id":"returnMockResponse-NHIJyWxrabi9Ae9",
+        "type":"returnMockResponse",
+        "position":{"x":1395,"y":540},"data":{}
+      },
+      {
+        "id":"fourAnd-GhgChRCVGRu8VCp",
+        "type":"fourAnd",
+        "position":{"x":1125,"y":510},"data":{}
+      },
+      {
+        "id":"requestUrl-cgwFNJiz7CEPCc6",
+        "type":"requestUrl",
+        "position":{"x":135,"y":300},
+        "data":{"op":"contains","text":new URL(request.url).pathname}
+      },
+      {
+        "id":"requestHeader-Xs7pujR8oi6oIay",
+        "type":"requestHeader",
+        "position":{"x":-150,"y":480},
+        "data":{"headers":[{"name":"Content-Type","op":"equals","value":"application/json"}]}
+      },
+      {
+        "id":"requestHttpMethod-PDO0B2NP7pOFXLB",
+        "type":"requestHttpMethod","position":{"x":134.99999999999994,"y":390},
+        "data":{"method":request.requestMethod}
+      },
+      {
+        "source":"gotRequest-xhfpfqU6hVLrp2V",
+        "sourceHandle":"execOut",
+        "target":"fourAnd-GhgChRCVGRu8VCp",
+        "targetHandle":"execIn",
+        "id":"reactflow__edge-gotRequest-xhfpfqU6hVLrp2VexecOut-fourAnd-GhgChRCVGRu8VCpexecIn",
+        "type":"default",
+        "data":{}
+      },
+      {
+        "source":"requestUrl-cgwFNJiz7CEPCc6",
+        "sourceHandle":"true",
+        "target":"fourAnd-GhgChRCVGRu8VCp",
+        "targetHandle":"a",
+        "id":"reactflow__edge-requestUrl-cgwFNJiz7CEPCc6true-fourAnd-GhgChRCVGRu8VCpa",
+        "type":"default",
+        "data":{}
+      },
+      {
+        "source":"requestBody-DcjlDrJe07YGTSb",
+        "sourceHandle":"true",
+        "target":"fourAnd-GhgChRCVGRu8VCp",
+        "targetHandle":"d",
+        "id":"reactflow__edge-requestBody-DcjlDrJe07YGTSbtrue-fourAnd-GhgChRCVGRu8VCpd",
+        "type":"default",
+        "data":{}
+      },
+      {
+        "source":"fourAnd-GhgChRCVGRu8VCp",
+        "sourceHandle":"true",
+        "target":"returnMockResponse-NHIJyWxrabi9Ae9",
+        "targetHandle":"execIn",
+        "id":"reactflow__edge-fourAnd-GhgChRCVGRu8VCptrue-returnMockResponse-NHIJyWxrabi9Ae9execIn",
+        "type":"default",
+        "data":{}
+      },
+      {
+        "source":"requestHeader-Xs7pujR8oi6oIay",
+        "sourceHandle":"true",
+        "target":"fourAnd-GhgChRCVGRu8VCp",
+        "targetHandle":"c",
+        "id":"reactflow__edge-requestHeader-Xs7pujR8oi6oIaytrue-fourAnd-GhgChRCVGRu8VCpc",
+        "type":"default","data":{}
+      },
+      {
+        "source":"requestHttpMethod-PDO0B2NP7pOFXLB",
+        "sourceHandle":"true",
+        "target":"fourAnd-GhgChRCVGRu8VCp",
+        "targetHandle":"b",
+        "id":"reactflow__edge-requestHttpMethod-PDO0B2NP7pOFXLBtrue-fourAnd-GhgChRCVGRu8VCpb",
+        "type":"default","data":{}
+      }
+    ],
+    "position":[266.0416197975254,22.18278965129366],
+    "zoom":1.1136107986501687
+  }
+}
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  
   return (
     <div
       role="tabpanel"
@@ -30,10 +203,27 @@ function TabPanel(props) {
 }
 
 export function RequestViewerPanel(props) {
+  const params = useParams();
+  const navigate = useNavigate();
+  const [request, setRequest] = React.useState(null);
   const [requestTabIndex, setRequestTabIndex] = React.useState(0);
   const [responseTabIndex, setResponseTabIndex] = React.useState(0);
 
-  if (!props.request) {
+  const fetchRequest = async (id) => {
+    let response = await axios.get(`/api/request/${id}`);
+    let request = await response.data;
+    request.requestHeaders = Object.entries(JSON.parse(request.requestHeaders));
+    request.responseHeaders = Object.entries(JSON.parse(request.responseHeaders));
+    setRequest(request);
+  }
+
+  React.useEffect(() => {
+    if(params.requestId) {
+      fetchRequest(params.requestId);
+    }
+  }, [params.requestId]);
+
+  if (!request) {
     return <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>Select a request to view details.</Typography></Box>
   }
 
@@ -55,6 +245,27 @@ export function RequestViewerPanel(props) {
     return "text";
   }
 
+  const handleOnCreateMockClick = async (request) => {
+    const mock = {
+      priority: 100,
+      name: `A mock created from request #${request.id}.`,
+      description: 'A mock created from a request.',
+      parameters: [],
+      trigger: request.requestMethod == "GET" ? generateGetTrigger(request) : generatePostTrigger(request),
+      responseHeaders: request.responseHeaders.map((header) => ({name: header[0], value: header[1].join(';')})),
+      responseStatus: request.responseStatus,
+      responseBody: request.responseBody
+    }
+
+    let sendMock = {...mock}
+    sendMock.parameters = JSON.stringify(mock.parameters);
+    sendMock.trigger = JSON.stringify(mock.trigger);
+    sendMock.responseHeaders = JSON.stringify(mock.responseHeaders);
+  
+    let response = await axios.post(`/api/mock`, sendMock);
+    navigate(`/mocks/${response.data.id}`);
+  }
+
   return (
     <Stack sx={{height: 'calc(100vh - 80px)', mt: 1, mr: 1}} direction="column"
       divider={<Divider orientation="horizontal" flexItem />}
@@ -68,19 +279,19 @@ export function RequestViewerPanel(props) {
           </Tabs>
         </Box>
         <TabPanel value={requestTabIndex} index={0}>
-          <HeaderList headers={props.request.requestHeaders} />
+          <HeaderList headers={request.requestHeaders} />
         </TabPanel>
         <TabPanel value={requestTabIndex} index={1}>
-          {props.request.requestBody && <CodeBlock
+          {request.requestBody && <CodeBlock
             customStyle={{height: 'calc(100vh - 740px)'}}
-            text={formatResponeBody(props.request.requestHeaders, props.request.requestBody)}
-            language={determineLanguage(props.request.requestHeaders)}
+            text={formatResponeBody(request.requestHeaders, request.requestBody)}
+            language={determineLanguage(request.requestHeaders)}
           />}
-          {!props.request.requestBody && <Typography>No request body.</Typography>}
+          {!request.requestBody && <Typography>No request body.</Typography>}
         </TabPanel>
         <TabPanel value={requestTabIndex} index={2}>
           <Box sx={{m:1}}>
-            <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={props.onCreateMockClick}>
+            <Button variant="outlined" startIcon={<AccountTreeIcon />} onClick={() => handleOnCreateMockClick(request)}>
               Create Mock from Request
             </Button>
           </Box>
@@ -94,15 +305,15 @@ export function RequestViewerPanel(props) {
           </Tabs>
         </Box>
         <TabPanel value={responseTabIndex} index={0}>
-          <HeaderList headers={props.request.responseHeaders} />
+          <HeaderList headers={request.responseHeaders} />
         </TabPanel>
         <TabPanel value={responseTabIndex} index={1}>
-          {props.request.responseBody && <CodeBlock
+          {request.responseBody && <CodeBlock
             customStyle={{height: 'calc(100vh - 740px)'}}
-            text={formatResponeBody(props.request.responseHeaders, props.request.responseBody)}
-            language={determineLanguage(props.request.responseHeaders)}
+            text={formatResponeBody(request.responseHeaders, request.responseBody)}
+            language={determineLanguage(request.responseHeaders)}
           />}
-          {!props.request.responseBody && <Typography>No response body.</Typography>}
+          {!request.responseBody && <Typography>No response body.</Typography>}
         </TabPanel>
       </Box>
     </Stack>

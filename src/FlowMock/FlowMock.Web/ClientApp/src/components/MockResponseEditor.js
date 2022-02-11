@@ -12,35 +12,48 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
+import { ResponseHeaderRow } from './ResponseHeaderRow';
+
 export function MockResponseEditor(props) {
+  const [responseHeaders, setResponseHeaders] = React.useState([]);
+  const [responseStatus, setResponseStatus] = React.useState('');
+  const [responseBody, setResponseBody] = React.useState('');
+  
+  React.useEffect(() => {
+    if(props.mock) {
+      setResponseHeaders(props.mock.responseHeaders);
+      setResponseStatus(props.mock.responseStatus);
+      setResponseBody(props.mock.responseBody);
+    }
+  }, [props.mock]);
 
   const handleAddClick = () => {
+    setResponseHeaders([...props.mock.responseHeaders, {name: "", value: ""}]);
     props.mock.responseHeaders = [...props.mock.responseHeaders, {name: "", value: ""}]
     props.setMock(props.mock);
   }
 
-  const handleRemoveClick = (header) => {
+  const handleRemoveHeader = (header) => {
+    setResponseHeaders(props.mock.responseHeaders.filter(p => p != header));
     props.mock.reponseHeaders = props.mock.responseHeaders.filter(p => p != header)
     props.setMock(props.mock);
   }
 
   const handleStatusChange = (event) => {
+    setResponseStatus(event.target.value);
     props.mock.responseStatus = event.target.value;
     props.setMock(props.mock);
   }
 
   const handleBodyChange = (event) => {
+    setResponseBody(event.target.value);
     props.mock.responseBody = event.target.value;
     props.setMock(props.mock);
   }
 
-  const handleHeaderNameChange = (event, header) => {
-    header.name = event.target.value; 
-    props.setMock(props.mock);
-  }
-
-  const handleHeaderValueChange = (event, header) => {
-    header.value = event.target.value;
+  const handleHeaderChange = (oldHeader, newHeader) => {
+    let newHeaders = responseHeaders.map((header) => header.name == oldHeader.name ? {name: newHeader.name, value: newHeader.value} : header);
+    props.mock.responseHeaders = [...newHeaders];
     props.setMock(props.mock);
   }
 
@@ -52,8 +65,8 @@ export function MockResponseEditor(props) {
       spacing={2}
       mt={1}
     >      
-      <TextField label="Status" variant="outlined" value={props.mock.responseStatus} onChange={handleStatusChange} />
-      <TextField label="Body" multiline rows={4} variant="outlined" value={props.mock.responseBody} onChange={handleBodyChange} />
+      <TextField label="Status" variant="outlined" value={responseStatus} onChange={handleStatusChange} />
+      <TextField label="Body" multiline rows={4} variant="outlined" value={responseBody} onChange={handleBodyChange} />
       <TableContainer component={Paper}>
         <Table sx={{width: '100%'}}>
           <TableHead>
@@ -64,16 +77,8 @@ export function MockResponseEditor(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.mock.responseHeaders.map((header) => (
-              <TableRow key={header.name}>
-                <TableCell>
-                  <IconButton component="span" onClick={() => handleRemoveClick(header)}>
-                    <RemoveIcon />
-                  </IconButton>
-                </TableCell>
-                <TableCell><TextField label="Name" variant="outlined" value={header.name} fullWidth onChange={(e) => handleHeaderNameChange(e, header)} /></TableCell>
-                <TableCell><TextField label="Value" variant="outlined" value={header.value} fullWidth onChange={(e) => handleHeaderValueChange(e, header)} /></TableCell>
-              </TableRow>
+            {responseHeaders.map((header) => (
+              <ResponseHeaderRow key={header.name} header={header} onChange={handleHeaderChange} onRemove={handleRemoveHeader} />
             ))}
             <TableRow>
               <TableCell colSpan={3}>

@@ -64,7 +64,7 @@ namespace FlowMock.Engine
 
         public async Task<(Mock, MockContext)> ShouldHandleAsync(HttpContext context)
         {
-            var mocks = await _dataAccess.GetAllMocksAsync();
+            var mocks = await _dataAccess.GetAllMocksAsync(new FilterAndProjectionQuery() { Limit = int.MaxValue });
 
             foreach (var mock in mocks)
             {

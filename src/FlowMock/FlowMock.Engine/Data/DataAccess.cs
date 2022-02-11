@@ -11,13 +11,19 @@ namespace FlowMock.Engine.Data
     public class DataAccess : IDataAccess
     {
         private const string ConnectionString = "Data Source=FlowMock.sqlite";
+        private List<string> RequestFields = new List<string> { "id", "timestamp", "url", "request_method", "request_headers", "request_body", "response_status", "response_headers", "response_body", "mock_id" };
+        private List<string> MockFields = new List<string> { "id", "priority", "name", "description", "parameters", "trigger", "response_status", "response_headers", "response_body" };
 
-        public async Task AddRequestAsync(Request request)
+        public async Task<Request> AddRequestAsync(Request request)
         {
             using var connection = new SqliteConnection(ConnectionString);
 
             await connection.ExecuteAsync(@"INSERT INTO requests (timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body, mock_id)
                 VALUES (@Timestamp, @Url, @RequestMethod, @RequestHeaders, @RequestBody, @ResponseStatus, @ResponseHeaders, @ResponseBody, @MockId);", request);
+
+            request.Id = await connection.ExecuteScalarAsync<long>("select last_insert_rowid()");
+
+            return request;
         }
 
         public async Task<IEnumerable<ProxyMapping>> GetAllProxyMappingsAsync()
@@ -26,10 +32,32 @@ namespace FlowMock.Engine.Data
             return await connection.QueryAsync<ProxyMapping>("SELECT base_path, proxy_to_base_url FROM proxy_mappings;");
         }
 
-        public async Task<IEnumerable<Request>> GetAllRequestsAsync()
+        public async Task<IEnumerable<Request>> GetAllRequestsAsync(FilterAndProjectionQuery filterAndProjectionQuery)
+        {
+            List<string> fields = new List<string>();
+            if (filterAndProjectionQuery.Fields == "all")
+            {
+                fields.AddRange(RequestFields);
+            }
+            else
+            {
+                foreach(string field in filterAndProjectionQuery.Fields.Split(","))
+                {
+                    if(RequestFields.Contains(field))
+                    {
+                        fields.Add(field);
+                    }
+                }
+            }            
+
+            using var connection = new SqliteConnection(ConnectionString);
+            return await connection.QueryAsync<Request>($"SELECT {string.Join(", ", fields)} FROM requests limit {filterAndProjectionQuery.Limit} offset {filterAndProjectionQuery.Offset};");
+        }
+
+        public async Task<Request> GetRequestByIdAsync(long id)
         {
             using var connection = new SqliteConnection(ConnectionString);
-            return await connection.QueryAsync<Request>("SELECT id, timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body, mock_id FROM requests;");
+            return await connection.QueryFirstAsync<Request>($"SELECT {string.Join(", ", RequestFields)} FROM requests where id=@Id;", new { Id = id });
         }
 
         public async Task<IEnumerable<Setting>> GetAllSettingsAsync()
@@ -95,18 +123,44 @@ namespace FlowMock.Engine.Data
             }
         }
 
-        public async Task<IEnumerable<Mock>> GetAllMocksAsync()
+        public async Task<IEnumerable<Mock>> GetAllMocksAsync(FilterAndProjectionQuery filterAndProjectionQuery)
         {
+            List<string> fields = new List<string>();
+            if (filterAndProjectionQuery.Fields == "all")
+            {
+                fields.AddRange(MockFields);
+            }
+            else
+            {
+                foreach (string field in filterAndProjectionQuery.Fields.Split(","))
+                {
+                    if (MockFields.Contains(field))
+                    {
+                        fields.Add(field);
+                    }
+                }
+            }
+
             using var connection = new SqliteConnection(ConnectionString);
-            return await connection.QueryAsync<Mock>("SELECT id, priority, name, description, parameters, trigger, response_status, response_headers, response_body FROM mocks;");
+            return await connection.QueryAsync<Mock>($"SELECT {string.Join(", ", fields)} FROM mocks limit {filterAndProjectionQuery.Limit} offset {filterAndProjectionQuery.Offset};");
         }
 
-        public async Task AddMockAsync(Mock mock)
+        public async Task<Mock> GetMockByIdAsync(long id)
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+            return await connection.QueryFirstAsync<Mock>($"SELECT {string.Join(", ", MockFields)} FROM mocks where id=@Id;", new { Id = id });
+        }
+
+        public async Task<Mock> AddMockAsync(Mock mock)
         {
             using var connection = new SqliteConnection(ConnectionString);
 
             await connection.ExecuteAsync(@"INSERT INTO mocks (priority, name, description, parameters, trigger, response_status, response_headers, response_body)
                 VALUES (@Priority, @Name, @Description, @Parameters, @Trigger, @ResponseStatus, @ResponseHeaders, @ResponseBody);", mock);
+
+            mock.Id = await connection.ExecuteScalarAsync<long>("select last_insert_rowid()");
+
+            return mock;
         }
 
         public async Task UpdateMockAsync(Mock mock)

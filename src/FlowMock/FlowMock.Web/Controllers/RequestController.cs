@@ -18,9 +18,15 @@ namespace FlowMock.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Request>> Get()
+        public async Task<IEnumerable<Request>> GetAll([FromQuery] FilterAndProjectionQuery filterAndProjectionQuery)
         {
-            return await _dataAccess.GetAllRequestsAsync();
+            return await _dataAccess.GetAllRequestsAsync(filterAndProjectionQuery);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<Request> GetOne(long id)
+        {
+            return await _dataAccess.GetRequestByIdAsync(id);
         }
     }
 }

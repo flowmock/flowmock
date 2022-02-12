@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router';
 import { Layout } from './pages/Layout';
 
-export default () => {
+const App = () => {
   return (
     <Layout>
       <Outlet />
     </Layout>
   );
 }
+
+export default App;

@@ -14,7 +14,7 @@ export const QueryStringComponent = ({ data }) => {
   }, [data])
 
   const handleQueryStringChange = (oldKovRow, newKovRow) => {
-    let newQueryStrings = queryStrings.map((queryString) => queryString.name == oldKovRow.name ? {name: newKovRow.name, op: newKovRow.op, value: newKovRow.value} : queryString);
+    let newQueryStrings = queryStrings.map((queryString) => queryString.name === oldKovRow.name ? {name: newKovRow.name, op: newKovRow.op, value: newKovRow.value} : queryString);
     setQueryStrings(newQueryStrings);
     data.queryStrings = newQueryStrings;
     data.onChange();
@@ -28,7 +28,7 @@ export const QueryStringComponent = ({ data }) => {
   }
 
   const handleRemoveQueryString = (header) => {
-    let newQueryStrings = queryStrings.filter(h => h != header);
+    let newQueryStrings = queryStrings.filter(h => h !== header);
     setQueryStrings(newQueryStrings);
     data.queryStrings = newQueryStrings;
     data.onChange();

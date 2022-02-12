@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 import Box from '@mui/material/Box';
@@ -10,8 +10,8 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-export function RequestListPanel(props) {
-  const params = useParams();
+export function RequestListPanel() {
+  const { requestId } = useParams();
   const [requests, setRequests] = React.useState([]);
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ export function RequestListPanel(props) {
 
   React.useEffect(() => {
     fetchRequests();
-  }, []);
+  }, [requestId]);
 
   const handleClick = (requestId) => {    
     navigate(`/requests/${requestId}`);
@@ -47,8 +47,8 @@ export function RequestListPanel(props) {
           {requests.map((request) => (
             <TableRow
               hover
-              onClick={(event) => handleClick(request.id)}
-              selected={request.id==params.requestId}
+              onClick={() => handleClick(request.id)}
+              selected={request.id===parseInt(requestId)}
               key={request.id}>
               <TableCell>{request.id}</TableCell>
               <TableCell>{request.responseStatus}</TableCell>

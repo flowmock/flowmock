@@ -1,12 +1,7 @@
 import * as React from 'react';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import Autocomplete from '@mui/material/Autocomplete';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
@@ -18,7 +13,7 @@ export const ResponseHeaderRow = (props) => {
   React.useEffect(() => {    
     setName(props.header.name);
     setValue(props.header.value);    
-  }, [props.name, props.value])
+  }, [props.header])
 
   const handleNameChange = (e) => {
     setName(e.target.value);

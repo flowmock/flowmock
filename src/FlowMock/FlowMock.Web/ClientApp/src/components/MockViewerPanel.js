@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -26,7 +26,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 0 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -34,7 +34,7 @@ function TabPanel(props) {
 }
 
 export function MockViewerPanel(props) {
-  const params = useParams();
+  const { mockId } = useParams();
   const navigate = useNavigate();
   const [mock, setMock] = React.useState(null);
   const [reactflowInstance, setReactflowInstance] = React.useState(null);
@@ -71,12 +71,12 @@ export function MockViewerPanel(props) {
   }
 
   React.useEffect(() => {
-    if(params.mockId) {
-      fetchMock(params.mockId);
+    if(mockId) {
+      fetchMock(parseInt(mockId));
     } else {
       setMock(null);
     }
-  }, [params.mockId]);
+  }, [mockId]);
 
   if (!mock) {
     return <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>Select a mock to view details.</Typography></Box>

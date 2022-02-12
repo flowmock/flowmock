@@ -35,7 +35,7 @@ const nodeTypes = {
   requestUrl: RequestUrlComponent
 };
   
-export function MockTriggerEditor(props) {
+export function MockTriggerEditor({trigger, onReactFlowInstanceLoad}) {
   const [reactflowInstance, setReactflowInstance] = React.useState(null);
   const [elements, setElements] = React.useState([]);
 
@@ -43,23 +43,23 @@ export function MockTriggerEditor(props) {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
-    if(props.trigger.elements) {
-      setElements(props.trigger.elements.map(e => {
+    if(trigger.elements) {
+      setElements(trigger.elements.map(e => {
         e.data = {...e.data, onChange: handleElementChange}
         return e;
       }));
     }
 
-    if (reactflowInstance && props.trigger.position) {
-      const [x = 0, y = 0] = props.trigger.position;
-      reactflowInstance.setTransform({ x, y, zoom: props.trigger.zoom || 0 });      
+    if (reactflowInstance && trigger.position) {
+      const [x = 0, y = 0] = trigger.position;
+      reactflowInstance.setTransform({ x, y, zoom: trigger.zoom || 0 });      
     }
 
     if (reactflowInstance) {
-      props.onReactFlowInstanceLoad(reactflowInstance);
+      onReactFlowInstanceLoad(reactflowInstance);
     }
 
-  }, [reactflowInstance]);
+  }, [trigger, onReactFlowInstanceLoad, reactflowInstance]);
 
   const onConnect = (params) => {
       setElements((els) => addEdge(params, els))
@@ -89,7 +89,7 @@ export function MockTriggerEditor(props) {
 
   const handleElementChange = (data) => {
     setElements((els) => els.map((e) => {
-      if (isEdge(e) || e.data != data) {
+      if (isEdge(e) || e.data !== data) {
         return e;
       }
 

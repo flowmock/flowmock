@@ -10,7 +10,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 
 import { ResponseHeaderRow } from './ResponseHeaderRow';
 
@@ -34,8 +33,8 @@ export function MockResponseEditor(props) {
   }
 
   const handleRemoveHeader = (header) => {
-    setResponseHeaders(props.mock.responseHeaders.filter(p => p != header));
-    props.mock.reponseHeaders = props.mock.responseHeaders.filter(p => p != header)
+    setResponseHeaders(props.mock.responseHeaders.filter(p => p !== header));
+    props.mock.reponseHeaders = props.mock.responseHeaders.filter(p => p !== header)
     props.setMock(props.mock);
   }
 
@@ -52,7 +51,7 @@ export function MockResponseEditor(props) {
   }
 
   const handleHeaderChange = (oldHeader, newHeader) => {
-    let newHeaders = responseHeaders.map((header) => header.name == oldHeader.name ? {name: newHeader.name, value: newHeader.value} : header);
+    let newHeaders = responseHeaders.map((header) => header.name === oldHeader.name ? {name: newHeader.name, value: newHeader.value} : header);
     props.mock.responseHeaders = [...newHeaders];
     props.setMock(props.mock);
   }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import { HeaderList } from './HeaderList';
 import Button from '@mui/material/Button';
-import { CodeBlock, dracula } from "react-code-blocks";
+import { CodeBlock } from "react-code-blocks";
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 const generateGetTrigger = (request) => {
@@ -195,7 +195,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 0 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -236,7 +236,7 @@ export function RequestViewerPanel(props) {
   }
 
   const determineLanguage = (headers) => {
-    const contentTypeHeader = headers.find(h => h[0] == 'Content-Type');
+    const contentTypeHeader = headers.find(h => h[0] === 'Content-Type');
     if(!contentTypeHeader) { return "text"; }
     if(contentTypeHeader[1][0].includes('application/json')) { return "json"; }
     if(contentTypeHeader[1][0].includes('text/html')) { return "html"; }
@@ -251,7 +251,7 @@ export function RequestViewerPanel(props) {
       name: `A mock created from request #${request.id}.`,
       description: 'A mock created from a request.',
       parameters: [],
-      trigger: request.requestMethod == "GET" ? generateGetTrigger(request) : generatePostTrigger(request),
+      trigger: request.requestMethod === "GET" ? generateGetTrigger(request) : generatePostTrigger(request),
       responseHeaders: request.responseHeaders.map((header) => ({name: header[0], value: header[1].join(';')})),
       responseStatus: request.responseStatus,
       responseBody: request.responseBody

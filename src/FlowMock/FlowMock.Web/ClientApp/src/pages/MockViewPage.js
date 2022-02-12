@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import { Outlet } from 'react-router';
 
 import Stack from '@mui/material/Stack';

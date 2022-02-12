@@ -26,7 +26,7 @@ export const RequestHeaderComponent = ({ data }) => {
   }, [data])
   
   const handleHeaderChange = (oldKovRow, newKovRow) => {
-    let newHeaders = headers.map((header) => header.name == oldKovRow.name ? {name: newKovRow.name, op: newKovRow.op, value: newKovRow.value} : header);
+    let newHeaders = headers.map((header) => header.name === oldKovRow.name ? {name: newKovRow.name, op: newKovRow.op, value: newKovRow.value} : header);
     setHeaders(newHeaders);
     data.headers = newHeaders;
     data.onChange(data);
@@ -40,7 +40,7 @@ export const RequestHeaderComponent = ({ data }) => {
   }
 
   const handleRemoveHeader = (kovRow) => {
-    let newHeaders = headers.filter(header => header.name != kovRow.name);
+    let newHeaders = headers.filter(header => header.name !== kovRow.name);
     setHeaders(newHeaders);
     data.headers = newHeaders;
     data.onChange(data);

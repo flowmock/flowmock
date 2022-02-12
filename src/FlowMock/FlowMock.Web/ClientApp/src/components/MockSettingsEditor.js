@@ -35,8 +35,8 @@ export function MockSettingsEditor(props) {
   }
 
   const handleRemoveClick = (param) => {
-    setParameters(parameters.filter(p => p != param));
-    props.mock.parameters = props.mock.parameters.filter(p => p != param);
+    setParameters(parameters.filter(p => p !== param));
+    props.mock.parameters = props.mock.parameters.filter(p => p !== param);
     props.setMock(props.mock);
   }
 
@@ -62,7 +62,7 @@ export function MockSettingsEditor(props) {
   }
 
   const handleParamChange = (oldParam, newParam) => {
-    let newParams = parameters.map((param) => param.name == oldParam.name ? {name: newParam.name, value: newParam.value} : param);    
+    let newParams = parameters.map((param) => param.name === oldParam.name ? {name: newParam.name, value: newParam.value} : param);    
     setParameters([...newParams]);
     props.mock.parameters = [...newParams];
     props.setMock(props.mock);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
 export function MockListPanel(props) {
-  const params = useParams();
+  const { mockId } = useParams();
   const [mocks, setMocks] = React.useState([]);
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ export function MockListPanel(props) {
 
   React.useEffect(() => {
     fetchMocks();
-  }, [params.mockId]);
+  }, [mockId]);
 
   const handleClick = (mockId) => {
     navigate(`/mocks/${mockId}`);
@@ -67,8 +67,8 @@ export function MockListPanel(props) {
           {mocks.map((mock) => (
             <TableRow
               hover
-              onClick={(event) => handleClick(mock.id)}
-              selected={mock.id==params.mockId} 
+              onClick={() => handleClick(mock.id)}
+              selected={mock.id===parseInt(mockId)} 
               key={mock.id}>
               <TableCell>{mock.priority}</TableCell>
               <TableCell>{mock.name}</TableCell>              

@@ -11,15 +11,15 @@ namespace FlowMock.Engine.Data
     public class DataAccess : IDataAccess
     {
         private const string ConnectionString = "Data Source=FlowMock.sqlite";
-        private List<string> RequestFields = new List<string> { "id", "timestamp", "url", "request_method", "request_headers", "request_body", "response_status", "response_headers", "response_body", "mock_id" };
+        private List<string> RequestFields = new List<string> { "id", "timestamp", "url", "request_method", "request_headers", "request_body", "response_status", "response_headers", "response_body", "response_time", "mock_id" };
         private List<string> MockFields = new List<string> { "id", "priority", "name", "description", "parameters", "trigger", "response_status", "response_headers", "response_body" };
 
         public async Task<Request> AddRequestAsync(Request request)
         {
             using var connection = new SqliteConnection(ConnectionString);
 
-            await connection.ExecuteAsync(@"INSERT INTO requests (timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body, mock_id)
-                VALUES (@Timestamp, @Url, @RequestMethod, @RequestHeaders, @RequestBody, @ResponseStatus, @ResponseHeaders, @ResponseBody, @MockId);", request);
+            await connection.ExecuteAsync(@"INSERT INTO requests (timestamp, url, request_method, request_headers, request_body, response_status, response_headers, response_body, response_time, mock_id)
+                VALUES (@Timestamp, @Url, @RequestMethod, @RequestHeaders, @RequestBody, @ResponseStatus, @ResponseHeaders, @ResponseBody, @ResponseTime, @MockId);", request);
 
             request.Id = await connection.ExecuteScalarAsync<long>("select last_insert_rowid()");
 

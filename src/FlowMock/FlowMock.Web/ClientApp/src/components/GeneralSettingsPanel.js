@@ -21,7 +21,7 @@ export function GeneralSettingsPanel(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <TableContainer>
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
@@ -37,7 +37,7 @@ export function GeneralSettingsPanel(props) {
               >
                 <TableCell sx={{width: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{setting.key}</TableCell>
                 <TableCell>
-                  <TextField sx={{width: '100%' }} value={setting.value} onChange={(e) => handleFieldChange(e, setting)} variant="outlined" />
+                  <TextField sx={{width: '100%' }} value={setting.value} size="small" onChange={(e) => handleFieldChange(e, setting)} variant="outlined" />
                 </TableCell>
                 <TableCell>
                   <Typography>

@@ -30,36 +30,33 @@ namespace FlowMock.Engine
             _dataAccess = dataAccess;
         }
 
-        public async Task HandleAsync(HttpContext context)
+        public async Task HandleAsync(ProxyContext context)
         {
-            // Log entry for the access log, this gets built out as info is available.
-            var requestLog = new Request();
-            requestLog.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            requestLog.RequestMethod = context.Request.Method;
+            context.Request.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            context.Request.RequestMethod = context.HttpContext.Request.Method;
             // requestLog.Url = UriHelper.GetDisplayUrl(context.Request);
-            requestLog.RequestHeaders = JsonSerializer.Serialize(context.Request.Headers);
-            var originalResponseBodySteam = context.Response.Body;
+            context.Request.RequestHeaders = JsonSerializer.Serialize(context.HttpContext.Request.Headers);
+            var originalResponseBodySteam = context.HttpContext.Response.Body;
             using MemoryStream requestStream = new MemoryStream();
             using MemoryStream responseStream = new MemoryStream();
-            await context.Request.Body.CopyToAsync(requestStream);
-            context.Request.Body = requestStream;
-            requestLog.RequestBody = Encoding.UTF8.GetString(requestStream.ToArray());
-            context.Response.Body = responseStream;                                                
-            context.Request.Body.Seek(0, SeekOrigin.Begin);
+            await context.HttpContext.Request.Body.CopyToAsync(requestStream);
+            context.HttpContext.Request.Body = requestStream;
+            context.Request.RequestBody = Encoding.UTF8.GetString(requestStream.ToArray());
+            context.HttpContext.Response.Body = responseStream;                                                
+            context.HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
             var client = _httpClientFactory.CreateClient("proxy");
-            var clientRequest = await _requestMapper.MapAsync(context.Request);
-            requestLog.Url = clientRequest.RequestUri.AbsoluteUri.ToString();
-            await _responseMapper.MapAsync(context.Response, await client.SendAsync(clientRequest));
-            requestLog.ResponseStatus = context.Response.StatusCode;
-            requestLog.ResponseHeaders = JsonSerializer.Serialize(context.Response.Headers);            
-            context.Response.Body.Seek(0, SeekOrigin.Begin);
+            var clientRequest = await _requestMapper.MapAsync(context.HttpContext.Request);
+            context.Request.Url = clientRequest.RequestUri.AbsoluteUri.ToString();
+            await _responseMapper.MapAsync(context.HttpContext.Response, await client.SendAsync(clientRequest));
+            context.Request.ResponseStatus = context.HttpContext.Response.StatusCode;
+            context.Request.ResponseHeaders = JsonSerializer.Serialize(context.HttpContext.Response.Headers);            
+            context.HttpContext.Response.Body.Seek(0, SeekOrigin.Begin);
             using MemoryStream data = new MemoryStream();
-            await context.Response.Body.CopyToAsync(data);
-            requestLog.ResponseBody = Encoding.UTF8.GetString(data.ToArray());
-            context.Response.Body.Seek(0, SeekOrigin.Begin);
-            await context.Response.Body.CopyToAsync(originalResponseBodySteam);
-            context.Response.Body = originalResponseBodySteam;
-            await _dataAccess.AddRequestAsync(requestLog);
+            await context.HttpContext.Response.Body.CopyToAsync(data);
+            context.Request.ResponseBody = Encoding.UTF8.GetString(data.ToArray());
+            context.HttpContext.Response.Body.Seek(0, SeekOrigin.Begin);
+            await context.HttpContext.Response.Body.CopyToAsync(originalResponseBodySteam);
+            context.HttpContext.Response.Body = originalResponseBodySteam;
         }
     }
 }

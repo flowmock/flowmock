@@ -58,7 +58,6 @@ export function AppBarPanel() {
             size="large"
             edge="start"
             color="inherit"
-            aria-label="open drawer"
             sx={{ mr: 2 }}
           >
             <MenuIcon />
@@ -71,15 +70,6 @@ export function AppBarPanel() {
           >
             FlowMock
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
           <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
       </AppBar>

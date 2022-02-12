@@ -13,6 +13,47 @@ import Button from '@mui/material/Button';
 import { CodeBlock } from "react-code-blocks";
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
+const HTTP_STATUS_CODES = {
+  200: 'OK',
+  201: 'Created',
+  202: 'Accepted',
+  203: 'Non-Authoritative Information',
+  204: 'No Content',
+  205: 'Reset Content',
+  206: 'Partial Content',
+  300: 'Multiple Choices',
+  301: 'Moved Permanently',
+  302: 'Found',
+  303: 'See Other',
+  304: 'Not Modified',
+  305: 'Use Proxy',
+  307: 'Temporary Redirect',
+  400: 'Bad Request',
+  401: 'Unauthorized',
+  402: 'Payment Required',
+  403: 'Forbidden',
+  404: 'Not Found',
+  405: 'Method Not Allowed',
+  406: 'Not Acceptable',
+  407: 'Proxy Authentication Required',
+  408: 'Request Timeout',
+  409: 'Conflict',
+  410: 'Gone',
+  411: 'Length Required',
+  412: 'Precondition Failed',
+  413: 'Request Entity Too Large',
+  414: 'Request-URI Too Long',
+  415: 'Unsupported Media Type',
+  416: 'Requested Range Not Satisfiable',
+  417: 'Expectation Failed',
+  500: 'Internal Server Error',
+  501: 'Not Implemented',
+  502: 'Bad Gateway',
+  503: 'Service Unavailable',
+  504: 'Gateway Timeout',
+  505: 'HTTP Version Not Supported'
+};
+
 const generateGetTrigger = (request) => {
   return {
     "elements": [
@@ -51,6 +92,7 @@ const generateGetTrigger = (request) => {
         "sourceHandle":"true",
         "target":"twoAnd-ta7Au9JDXXn65NZ",
         "targetHandle":"b",
+        "style": {strokeWidth: "3"},
         "id":"reactflow__edge-requestHttpMethod-PDO0B2NP7pOFXLBtrue-twoAnd-ta7Au9JDXXn65NZb",
         "type":"default"
       },
@@ -283,11 +325,11 @@ export function RequestViewerPanel(props) {
         </TabPanel>
         <TabPanel value={requestTabIndex} index={1}>
           {request.requestBody && <CodeBlock
-            customStyle={{height: 'calc(100vh - 740px)'}}
+            customStyle={{height: 'calc(50vh - 100px)'}}
             text={formatResponeBody(request.requestHeaders, request.requestBody)}
             language={determineLanguage(request.requestHeaders)}
           />}
-          {!request.requestBody && <Typography>No request body.</Typography>}
+          {!request.requestBody && <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>No request body.</Typography></Box>}
         </TabPanel>
         <TabPanel value={requestTabIndex} index={2}>
           <Box sx={{m:1}}>
@@ -302,6 +344,12 @@ export function RequestViewerPanel(props) {
           <Tabs value={responseTabIndex} onChange={(e, tabIndex) => setResponseTabIndex(tabIndex)}>
             <Tab label="Headers" />
             <Tab label="Body" />
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', alignItems: 'flex-end', mb:1, mr:1}}>
+              <Box sx={{ flexGrow: 1 }}></Box>
+              <Box sx={{ pl:1, pr:1 }}><Typography variant="body2">Status: {request.responseStatus} {HTTP_STATUS_CODES[request.responseStatus]}</Typography></Box>
+              <Box sx={{ pl:1, pr:1 }}><Typography variant="body2">Time: {request.responseTime}ms</Typography></Box>
+              <Box sx={{ pl:1, pr:1 }}><Typography variant="body2">Size: {request.responseBody.length}B</Typography></Box>
+            </Box>
           </Tabs>
         </Box>
         <TabPanel value={responseTabIndex} index={0}>
@@ -309,11 +357,11 @@ export function RequestViewerPanel(props) {
         </TabPanel>
         <TabPanel value={responseTabIndex} index={1}>
           {request.responseBody && <CodeBlock
-            customStyle={{height: 'calc(100vh - 740px)'}}
+            customStyle={{height: 'calc(50vh - 100px)'}}
             text={formatResponeBody(request.responseHeaders, request.responseBody)}
             language={determineLanguage(request.responseHeaders)}
           />}
-          {!request.responseBody && <Typography>No response body.</Typography>}
+          {!request.responseBody && <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>No response body.</Typography></Box>}
         </TabPanel>
       </Box>
     </Stack>

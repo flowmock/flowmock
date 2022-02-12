@@ -1,4 +1,5 @@
 ﻿using FlowMock.Engine.Data;
+using FlowMock.Engine.Models;
 using LazyCache;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
@@ -38,15 +39,23 @@ namespace FlowMock.Engine
                 return;
             }
 
+            var request = new Request();
+
+            var requestStopwatch = System.Diagnostics.Stopwatch.StartNew();
             (var mock, var mockContext) = await _httpMocker.ShouldHandleAsync(context);
-            if(mock != null)
+            if (mock != null)
             {
+                mockContext.Request = request;
                 await _httpMocker.HandleAsync(mock, mockContext);
             }
             else
             {
-                await _httpProxier.HandleAsync(context);
+                var proxyContext = new ProxyContext { Request = request, HttpContext = context };
+                await _httpProxier.HandleAsync(proxyContext);
             }
+            requestStopwatch.Stop();
+            request.ResponseTime = requestStopwatch.ElapsedMilliseconds;
+            await _dataAccess.AddRequestAsync(request);
         }
     }
 }

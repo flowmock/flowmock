@@ -31,7 +31,7 @@ export function RequestListPanel() {
 
   return (
     <Box sx={{overflowY: 'scroll', height: 'calc(100vh - 80px)', mt: 1}}>
-      <Table stickyHeader>
+      <Table stickyHeader size="small">
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>

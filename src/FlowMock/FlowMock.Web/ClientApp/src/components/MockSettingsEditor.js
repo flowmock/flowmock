@@ -76,11 +76,11 @@ export function MockSettingsEditor(props) {
       spacing={1}
       mt={1}
     >
-      <TextField label="Name" variant="outlined" value={name} onChange={handleNameChange} />
-      <TextField label="Priority" variant="outlined" value={priority} onChange={handlePriorityChange} />
-      <TextField label="Description" multiline rows={4} variant="outlined" value={description} onChange={handleDescriptionChange} />
+      <TextField label="Name" variant="outlined" size="small" value={name} onChange={handleNameChange} />
+      <TextField label="Priority" variant="outlined" size="small" value={priority} onChange={handlePriorityChange} />
+      <TextField label="Description" multiline rows={4} variant="outlined" size="small" value={description} onChange={handleDescriptionChange} />
       <TableContainer component={Paper}>
-      <Table sx={{width: '100%'}}>
+      <Table sx={{width: '100%'}} size="small">
         <TableHead>
           <TableRow>
             <TableCell sx={{width: '0px'}}></TableCell>

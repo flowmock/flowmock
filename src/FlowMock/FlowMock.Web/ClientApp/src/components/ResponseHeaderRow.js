@@ -37,7 +37,7 @@ export const ResponseHeaderRow = (props) => {
           <RemoveIcon />
         </IconButton>
       </TableCell>
-      <TableCell><TextField label="Name" variant="outlined" value={name} fullWidth onChange={handleNameChange} /></TableCell>
-      <TableCell><TextField label="Value" variant="outlined" value={value} fullWidth onChange={handleValueChange} /></TableCell>
+      <TableCell><TextField label="Name" variant="outlined"  size="small" value={name} fullWidth onChange={handleNameChange} /></TableCell>
+      <TableCell><TextField label="Value" variant="outlined" size="small" value={value} fullWidth onChange={handleValueChange} /></TableCell>
   </TableRow>);
 }

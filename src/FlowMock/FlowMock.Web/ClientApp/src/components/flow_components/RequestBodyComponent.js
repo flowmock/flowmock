@@ -52,7 +52,7 @@ export const RequestBodyComponent = ({ data }) => {
       backgroundColor: "#ffffff",
       width: 400,
     }}>
-      <Handle type="target" id="execIn" position={Position.Left} style={{ top: '20%', borderRadius: 0 }}>
+      <Handle type="target" id="execIn" position={Position.Left} style={{ top: '20%', height: '12px', width: '12px', left: '-6px' }}>
         <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">ex</div>
       </Handle>
       <Select
@@ -67,12 +67,12 @@ export const RequestBodyComponent = ({ data }) => {
         <MenuItem value={'endsWith'}>EndsWith</MenuItem>
         <MenuItem value={'regex'}>RegExMatch</MenuItem>
       </Select>
-      <TextField sx={{ width: '100%'}} multiline rows={4} label="Body" variant="outlined" value={text} onChange={handleTextChange} />
+      <TextField sx={{ width: '100%'}} multiline rows={4} label="Body" variant="outlined" size="small" value={text} onChange={handleTextChange} />
       <Handle
         type="source"
         position={Position.Right}
         id="true"
-        style={{ top: '30%', borderRadius: 0 }}
+        style={{ top: '30%', height: '12px', width: '12px', right: '-6px' }}
       >
         <Typography style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">true</Typography>
       </Handle>
@@ -80,7 +80,7 @@ export const RequestBodyComponent = ({ data }) => {
         type="source"
         position={Position.Right}
         id="false"
-        style={{ top: '70%', borderRadius: 0 }}
+        style={{ top: '70%', height: '12px', width: '12px', right: '-6px' }}
       >
         <div style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">false</div>
       </Handle>

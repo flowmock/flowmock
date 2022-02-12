@@ -13,6 +13,7 @@ namespace FlowMock.Engine.Models
         public int ResponseStatus { get; set; }
         public string? ResponseHeaders { get; set; }
         public string? ResponseBody { get; set; }
+        public long ResponseTime { get; set; }
         public long? MockId { get; set; }
     }
 }

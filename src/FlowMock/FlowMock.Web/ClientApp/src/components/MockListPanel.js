@@ -56,7 +56,7 @@ export function MockListPanel(props) {
       <IconButton component="span" onClick={handleAddMock}>
         <AddIcon />
       </IconButton>
-      <Table stickyHeader>
+      <Table stickyHeader size="small">
         <TableHead>
           <TableRow>
             <TableCell>Priority</TableCell>

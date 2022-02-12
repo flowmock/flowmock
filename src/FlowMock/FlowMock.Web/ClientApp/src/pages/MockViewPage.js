@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './MockViewPage.css';
 import { Outlet } from 'react-router';
 
 import Stack from '@mui/material/Stack';

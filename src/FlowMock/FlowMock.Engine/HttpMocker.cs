@@ -12,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FlowMock.Engine
@@ -30,36 +29,34 @@ namespace FlowMock.Engine
             _requestMapper = requestMapper;
         }
 
-        public async Task HandleAsync(Mock mock, MockContext mockContext)
+        public async Task HandleAsync(Mock mock, MockContext context)
         {
             // Log entry for the access log, this gets built out as info is available.
-            var requestLog = new Request();
-            requestLog.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            requestLog.RequestMethod = mockContext.HttpContext.Request.Method;
+            context.Request.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            context.Request.RequestMethod = context.HttpContext.Request.Method;
             // requestLog.Url = UriHelper.GetDisplayUrl(context.Request);
-            requestLog.RequestHeaders = JsonSerializer.Serialize(mockContext.HttpContext.Request.Headers);
+            context.Request.RequestHeaders = JsonSerializer.Serialize(context.HttpContext.Request.Headers);
             using MemoryStream requestStream = new MemoryStream();
-            await mockContext.HttpContext.Request.Body.CopyToAsync(requestStream);
-            mockContext.HttpContext.Request.Body = requestStream;
-            requestLog.RequestBody = Encoding.UTF8.GetString(requestStream.ToArray());
-            mockContext.HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
+            await context.HttpContext.Request.Body.CopyToAsync(requestStream);
+            context.HttpContext.Request.Body = requestStream;
+            context.Request.RequestBody = Encoding.UTF8.GetString(requestStream.ToArray());
+            context.HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
 
             var responseHeaders = JsonSerializer.Deserialize<IEnumerable<MockParameter>>(mock.ResponseHeaders);
 
             foreach (var header in responseHeaders)
             {
-                mockContext.HttpContext.Response.Headers.Add(header.Name, new StringValues(header.Value.Split(";").ToArray()));
+                context.HttpContext.Response.Headers.Add(header.Name, new StringValues(header.Value.Split(";").ToArray()));
             }
 
-            var clientRequest = await _requestMapper.MapAsync(mockContext.HttpContext.Request);
-            requestLog.Url = clientRequest.RequestUri.AbsoluteUri.ToString();
-            requestLog.ResponseStatus = mock.ResponseStatus;
-            mockContext.HttpContext.Response.StatusCode = mock.ResponseStatus;
-            requestLog.ResponseHeaders = JsonSerializer.Serialize(mockContext.HttpContext.Response.Headers);
-            requestLog.ResponseBody = mock.ResponseBody;
-            await (new MemoryStream(Encoding.UTF8.GetBytes(mock.ResponseBody ?? ""))).CopyToAsync(mockContext.HttpContext.Response.Body);
-            requestLog.MockId = mock.Id;
-            await _dataAccess.AddRequestAsync(requestLog);
+            var clientRequest = await _requestMapper.MapAsync(context.HttpContext.Request);
+            context.Request.Url = clientRequest.RequestUri.AbsoluteUri.ToString();
+            context.Request.ResponseStatus = mock.ResponseStatus;
+            context.HttpContext.Response.StatusCode = mock.ResponseStatus;
+            context.Request.ResponseHeaders = JsonSerializer.Serialize(context.HttpContext.Response.Headers);
+            context.Request.ResponseBody = mock.ResponseBody;
+            await (new MemoryStream(Encoding.UTF8.GetBytes(mock.ResponseBody ?? ""))).CopyToAsync(context.HttpContext.Response.Body);
+            context.Request.MockId = mock.Id;
         }
 
         public async Task<(Mock, MockContext)> ShouldHandleAsync(HttpContext context)

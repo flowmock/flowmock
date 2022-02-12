@@ -148,7 +148,7 @@ export function MockTriggerEditor({trigger, onReactFlowInstanceLoad}) {
       </Menu>
       <MiniMap />
       <Controls />
-      <Background variant="lines" />
+      <Background variant="lines" color="#dfdfdf" />
     </ReactFlow>
   </Box>)
 }

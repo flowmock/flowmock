@@ -38,6 +38,7 @@ namespace FlowMock.Engine.Data
                 response_status INTEGER NULL,
                 response_headers VARCHAR(10000) NULL,
                 response_body VARCHAR(100000) NULL,
+                response_time INTEGER NULL,
                 mock_id INTEGER NULL
                 );");
             

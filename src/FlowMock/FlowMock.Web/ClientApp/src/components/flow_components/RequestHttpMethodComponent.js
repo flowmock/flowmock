@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -25,7 +26,7 @@ export const RequestHttpMethodComponent = ({ data }) => {
   }
 
   return (
-    <Stack direction="row" spacing={1} sx={{
+    <Box sx={{
       pl: 5,
       pb: 1,
       pt: 1,
@@ -37,33 +38,35 @@ export const RequestHttpMethodComponent = ({ data }) => {
       backgroundColor: "#ffffff",
       width: 400,
     }}>
-      <Handle type="target" id="execIn" position={Position.Left} style={{ top: '20%', borderRadius: 0 }}>
-        <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">ex</div>
-      </Handle>
-      <Autocomplete
-        disablePortal
-        options={httpMethods}
-        sx={{ width: 300 }}
-        value={method}
-        onChange={handleMethodChange}
-        renderInput={(params) => <TextField {...params} label="HTTP Method" />}
-      />
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="true"
-        style={{ top: '30%', borderRadius: 0 }}
-      >
-        <Typography style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">true</Typography>
-      </Handle>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="false"
-        style={{ top: '70%', borderRadius: 0 }}
-      >
-        <div style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">false</div>
-      </Handle>
-    </Stack>
+      <Stack direction="row" spacing={1} sx={{width: '100%'}}>
+        <Handle type="target" id="execIn" position={Position.Left} style={{ top: '20%', height: '12px', width: '12px', left: '-6px' }}>
+          <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">ex</div>
+        </Handle>
+        <Autocomplete
+          disablePortal
+          options={httpMethods}
+          sx={{ width: 300 }}
+          value={method}
+          onChange={handleMethodChange}
+          renderInput={(params) => <TextField {...params} size="small" label="HTTP Method" />}
+        />
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="true"
+          style={{ top: '30%', height: '12px', width: '12px', right: '-6px' }}
+        >
+          <Typography style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">true</Typography>
+        </Handle>
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="false"
+          style={{ top: '70%', height: '12px', width: '12px', right: '-6px' }}
+        >
+          <div style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">false</div>
+        </Handle>
+      </Stack>
+    </Box>
   );
 };

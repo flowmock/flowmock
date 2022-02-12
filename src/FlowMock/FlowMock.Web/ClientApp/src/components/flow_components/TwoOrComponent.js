@@ -15,13 +15,13 @@ export const TwoOrComponent = ({ data }) => {
         height: 80,
         textAlign: 'center'
       }}>
-        <Handle type="target" id="execIn" position={Position.Left} style={{ top: '20%', borderRadius: 0 }}>
+        <Handle type="target" id="execIn" position={Position.Left} style={{ top: '20%', height: '12px', width: '12px', left: '-6px' }}>
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">ex</div>
         </Handle>
-        <Handle type="target" id="a" position={Position.Left} style={{ top: '50%', borderRadius: 0 }} >
+        <Handle type="target" id="a" position={Position.Left} style={{ top: '50%', height: '12px', width: '12px', left: '-6px' }}>
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">a</div>
         </Handle>
-        <Handle type="target" id="b" position={Position.Left} style={{ top: '80%', borderRadius: 0 }}>
+        <Handle type="target" id="b" position={Position.Left} style={{ top: '80%', height: '12px', width: '12px', left: '-6px' }}>
           <div style={{ position: 'absolute', bottom: '-5px', left: '16px' }} variant="subtitle2" component="div">b</div>
         </Handle>
         <Typography sx={{lineHeight: '80px'}} variant="body1" component="div">OR</Typography>
@@ -29,7 +29,7 @@ export const TwoOrComponent = ({ data }) => {
           type="source"
           position={Position.Right}
           id="true"
-          style={{ top: '30%', borderRadius: 0 }}
+          style={{ top: '30%', height: '12px', width: '12px', right: '-6px' }}
         >
           <Typography style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">true</Typography>
         </Handle>
@@ -37,7 +37,7 @@ export const TwoOrComponent = ({ data }) => {
           type="source"
           position={Position.Right}
           id="false"
-          style={{ top: '70%', borderRadius: 0 }}
+          style={{ top: '70%', height: '12px', width: '12px', right: '-6px' }}
         >
           <div style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">false</div>
         </Handle>

@@ -7,18 +7,14 @@ export const GotRequestComponent = ({ data }) => {
 
     return (
       <Box sx={{
-        p: 4,
-        borderRadius: '10px',
-        borderStyle: 'solid',
-        borderWidth: '1px',
-        backgroundColor: "#ffffff"
+        p: 4
       }}>
         <Typography>Got Request</Typography>
         <Handle
           type="source"
           position={Position.Right}
           id="execOut"
-          style={{ top: '20%', borderRadius: 0 }}
+          style={{ top: '20%', height: '12px', width: '12px', right: '-6px' }}
         />
       </Box>
     );

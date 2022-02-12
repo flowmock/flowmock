@@ -64,10 +64,10 @@ export function MockResponseEditor(props) {
       spacing={2}
       mt={1}
     >      
-      <TextField label="Status" variant="outlined" value={responseStatus} onChange={handleStatusChange} />
-      <TextField label="Body" multiline rows={4} variant="outlined" value={responseBody} onChange={handleBodyChange} />
+      <TextField label="Status" variant="outlined" size="small" value={responseStatus} onChange={handleStatusChange} />
+      <TextField label="Body" multiline rows={4} variant="outlined" size="small" value={responseBody} onChange={handleBodyChange} />
       <TableContainer component={Paper}>
-        <Table sx={{width: '100%'}}>
+        <Table sx={{width: '100%'}} size="small">
           <TableHead>
             <TableRow>
               <TableCell sx={{width: '0px'}}></TableCell>

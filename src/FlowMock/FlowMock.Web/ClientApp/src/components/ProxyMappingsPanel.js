@@ -46,10 +46,10 @@ const ProxyMappingTableRow = (props) => {
       />
     </TableCell>
     <TableCell>
-      <TextField sx={{width: '100%' }} value={basePath} variant="outlined" onChange={(e) => setBasePath(e.target.value)} onBlur={handleProxyMappingChange} />
+      <TextField sx={{width: '100%' }} value={basePath} variant="outlined" size="small" onChange={(e) => setBasePath(e.target.value)} onBlur={handleProxyMappingChange} />
     </TableCell>
     <TableCell>
-      <TextField sx={{width: '100%' }} value={proxyToBaseUrl} variant="outlined" onChange={(e) => setProxyToBaseUrl(e.target.value)} onBlur={handleProxyMappingChange} />
+      <TextField sx={{width: '100%' }} value={proxyToBaseUrl} variant="outlined" size="small" onChange={(e) => setProxyToBaseUrl(e.target.value)} onBlur={handleProxyMappingChange} />
     </TableCell>
   </TableRow>);
 }

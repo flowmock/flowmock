@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { NameOpValueRow } from './NameOpValueRow';
 
@@ -35,7 +36,7 @@ export const QueryStringComponent = ({ data }) => {
   }
 
   return (
-    <Stack direction="column" spacing={1} sx={{
+    <Box sx={{
       pb: 1,
       pr: 8,
       pl: 4,
@@ -45,38 +46,40 @@ export const QueryStringComponent = ({ data }) => {
       borderWidth: '1px',
       backgroundColor: "#ffffff"
     }}>
-      <Handle type="target" id="exec" position={Position.Left} style={{ top: '50%', borderRadius: 0 }}>
-        <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">ex</div>
-      </Handle>
-      {queryStrings.map((queryString, index) => (
-        <NameOpValueRow
-          key={queryString.name}
-          name={queryString.name}
-          nameLabel={"QueryString"}
-          nameSelectList={[]}
-          op={queryString.op}
-          value={queryString.value}
-          showAdd={index===queryStrings.length-1}
-          onChange={handleQueryStringChange}
-          onAdd={handleAddQueryString}
-          onRemove={handleRemoveQueryString}
-        />))}
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="true"
-        style={{ top: '30%', borderRadius: 0 }}
-      >
-        <Typography style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">true</Typography>
-      </Handle>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="false"
-        style={{ top: '70%', borderRadius: 0 }}
-      >
-        <div style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">false</div>
-      </Handle>
-    </Stack>
+      <Stack direction="column" spacing={1}>
+        <Handle type="target" id="exec" position={Position.Left} style={{ top: '50%', height: '12px', width: '12px', left: '-6px' }}>
+          <div style={{ position: 'absolute', bottom: '-5px', left: '16px'}} variant="subtitle2" component="div">ex</div>
+        </Handle>
+        {queryStrings.map((queryString, index) => (
+          <NameOpValueRow
+            key={queryString.name}
+            name={queryString.name}
+            nameLabel={"QueryString"}
+            nameSelectList={[]}
+            op={queryString.op}
+            value={queryString.value}
+            showAdd={index===queryStrings.length-1}
+            onChange={handleQueryStringChange}
+            onAdd={handleAddQueryString}
+            onRemove={handleRemoveQueryString}
+          />))}
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="true"
+          style={{ top: '30%', height: '12px', width: '12px', right: '-6px' }}
+        >
+          <Typography style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">true</Typography>
+        </Handle>
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="false"
+          style={{ top: '70%', height: '12px', width: '12px', right: '-6px' }}
+        >
+          <div style={{ position: 'absolute', bottom: '-4px', right: '16px' }} variant="subtitle2" component="div">false</div>
+        </Handle>
+      </Stack>
+    </Box>
   );
 };

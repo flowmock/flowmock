@@ -59,6 +59,7 @@ export const NameOpValueRow = (props) => {
       />
       <Select
         sx={{ width: 130 }}
+        size="small"
         value={op}
         label="Op"
         onChange={handleOpChange}
@@ -69,7 +70,7 @@ export const NameOpValueRow = (props) => {
         <MenuItem value={'endsWith'}>EndsWith</MenuItem>
         <MenuItem value={'regex'}>RegExMatch</MenuItem>
       </Select>
-      <TextField sx={{ width: 200 }} label="Field" value={value} onChange={handleValueChange} variant="outlined" />
+      <TextField sx={{ width: 200 }} label="Field" size="small" value={value} onChange={handleValueChange} variant="outlined" />
       <IconButton component="span" onClick={() => props.showAdd ? props.onAdd() : props.onRemove({name, op, value})}>
         {props.showAdd ? (<AddIcon />) : (<RemoveIcon />)}
       </IconButton>

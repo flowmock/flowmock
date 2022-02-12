@@ -126,7 +126,7 @@ export function ProxyMappingsPanel(props) {
         )}
       </Box>
       <TableContainer>
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
           <TableHead>
             <TableRow>
               <TableCell></TableCell>

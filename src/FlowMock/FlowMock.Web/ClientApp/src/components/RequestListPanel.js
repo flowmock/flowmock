@@ -16,7 +16,7 @@ export function RequestListPanel() {
   const navigate = useNavigate();
 
   const fetchRequests = async () => {
-    let response = await axios.get('/api/request?fields=id,response_status,url,request_method,url,response_body,mock_id');
+    let response = await axios.get('/api/request?limit=1000&fields=id,response_status,url,request_method,url,response_body,mock_id');
     let requests = await response.data;
     setRequests(requests);
   }
@@ -30,7 +30,7 @@ export function RequestListPanel() {
   };
 
   return (
-    <Box sx={{overflowY: 'scroll', height: 'calc(100vh - 80px)', mt: 1}}>
+    <Box sx={{overflowY: 'scroll', height: 'calc(100vh - 63px)', mt: 1}}>
       <Table stickyHeader size="small">
         <TableHead>
           <TableRow>

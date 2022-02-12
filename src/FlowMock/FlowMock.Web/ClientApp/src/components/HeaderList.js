@@ -15,7 +15,7 @@ export function HeaderList(props) {
   }
 
   return (
-    <TableContainer sx={{height: 'calc(50vh - 100px)'}} component={Paper}>
+    <TableContainer sx={{height: 'calc(50vh - 87px)'}} component={Paper}>
       <Table stickyHeader size="small">
         <TableHead>
           <TableRow>

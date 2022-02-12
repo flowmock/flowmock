@@ -17,7 +17,7 @@ export function MockListPanel(props) {
   const navigate = useNavigate();
 
   async function fetchMocks() {
-    let response = await axios.get('/api/mock?fields=id,name,priority');
+    let response = await axios.get('/api/mock?limit=1000&fields=id,name,priority');
     let mocks = await response.data; 
     setMocks(mocks);
   }
@@ -52,7 +52,7 @@ export function MockListPanel(props) {
   };
 
   return (
-    <Box sx={{overflowY: 'scroll', height: 'calc(100vh - 80px)', mt: 1}}>
+    <Box sx={{overflowY: 'scroll', height: 'calc(100vh - 63px)', mt: 1}}>
       <IconButton component="span" onClick={handleAddMock}>
         <AddIcon />
       </IconButton>

@@ -61,12 +61,18 @@ namespace FlowMock.Engine
 
         public async Task<(Mock, MockContext)> ShouldHandleAsync(HttpContext context)
         {
-            var mocks = await _dataAccess.GetAllMocksAsync(new FilterAndProjectionQuery() { Limit = int.MaxValue });
-
-            foreach (var mock in mocks)
+            var mockInfoList = await _appCache.GetOrAddAsync("mocks", async () =>
             {
-                var trigger = JsonSerializer.Deserialize<TriggerBody>(mock.Trigger);
+                return (await _dataAccess.GetAllMocksAsync(new FilterAndProjectionQuery() { Limit = int.MaxValue })).Select(mock =>
+                {
+                    var trigger = JsonSerializer.Deserialize<TriggerBody>(mock.Trigger);
+                    var mockParameters = JsonSerializer.Deserialize<IEnumerable<MockParameter>>(mock.Parameters);
+                    return (mock, trigger, mockParameters);
+                }).ToList();
+            });
 
+            foreach ((var mock, var trigger, var mockParameters) in mockInfoList)
+            {
                 Dictionary<string, string> mockState = new Dictionary<string, string>();
 
                 var mockContext = new MockContext()
@@ -77,7 +83,7 @@ namespace FlowMock.Engine
                 };
 
                 // Setup the initial state with the mock parameters.
-                var mockParameters = JsonSerializer.Deserialize<IEnumerable<MockParameter>>(mock.Parameters);
+                
                 foreach (var param in mockParameters) {
                     mockState.Add(param.Name, param.Value);
                 }

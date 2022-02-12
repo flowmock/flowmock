@@ -53,7 +53,7 @@ export function AppBarPanel() {
   return (
     <Box sx={{ flexShrink: 1 }}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar variant="dense">
           <IconButton
             size="large"
             edge="start"

@@ -309,7 +309,7 @@ export function RequestViewerPanel(props) {
   }
 
   return (
-    <Stack sx={{height: 'calc(100vh - 80px)', mt: 1, mr: 1}} direction="column"
+    <Stack sx={{height: 'calc(100vh - 85px)', mt: 1, mr: 1}} direction="column"
       divider={<Divider orientation="horizontal" flexItem />}
       spacing={1}>
       <Box sx={{ width: '100%', height: '50%' }}>
@@ -324,12 +324,12 @@ export function RequestViewerPanel(props) {
           <HeaderList headers={request.requestHeaders} />
         </TabPanel>
         <TabPanel value={requestTabIndex} index={1}>
-          {request.requestBody && <CodeBlock
-            customStyle={{height: 'calc(50vh - 100px)'}}
+          <CodeBlock
+            customStyle={{height: 'calc(50vh - 85px)'}}
             text={formatResponeBody(request.requestHeaders, request.requestBody)}
             language={determineLanguage(request.requestHeaders)}
-          />}
-          {!request.requestBody && <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>No request body.</Typography></Box>}
+            showLineNumbers={false}
+          />
         </TabPanel>
         <TabPanel value={requestTabIndex} index={2}>
           <Box sx={{m:1}}>
@@ -356,12 +356,12 @@ export function RequestViewerPanel(props) {
           <HeaderList headers={request.responseHeaders} />
         </TabPanel>
         <TabPanel value={responseTabIndex} index={1}>
-          {request.responseBody && <CodeBlock
-            customStyle={{height: 'calc(50vh - 100px)'}}
+          <CodeBlock
+            customStyle={{height: 'calc(50vh - 85px)'}}
             text={formatResponeBody(request.responseHeaders, request.responseBody)}
             language={determineLanguage(request.responseHeaders)}
-          />}
-          {!request.responseBody && <Box sx={{m:1, mt: 4, textAlign: 'center'}}><Typography>No response body.</Typography></Box>}
+            showLineNumbers={false}
+          />
         </TabPanel>
       </Box>
     </Stack>

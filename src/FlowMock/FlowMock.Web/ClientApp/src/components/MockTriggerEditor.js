@@ -121,7 +121,7 @@ export function MockTriggerEditor({trigger, onReactFlowInstanceLoad}) {
     setMenuOpen(false);
   }
 
-  return (<Box sx={{ width: '100%', height: 'calc(100vh - 170px)' }} onContextMenu={handleContextMenu}>
+  return (<Box sx={{ width: '100%', height: 'calc(100vh - 160px)' }} onContextMenu={handleContextMenu}>
     <ReactFlow elements={elements} nodeTypes={nodeTypes} onLoad={onLoad} onConnect={onConnect} onElementsRemove={onElementsRemove} snapToGrid={true} deleteKeyCode={46} key="edges">
       <Menu
         anchorReference="anchorPosition"
@@ -146,7 +146,6 @@ export function MockTriggerEditor({trigger, onReactFlowInstanceLoad}) {
         <Divider><Typography variant='caption'>Utilities</Typography></Divider>
         <MenuItem onClick={() => handleAddElement('delay')}>Delay</MenuItem>
       </Menu>
-      <MiniMap />
       <Controls />
       <Background variant="lines" color="#dfdfdf" />
     </ReactFlow>

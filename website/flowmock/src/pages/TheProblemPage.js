@@ -9,8 +9,8 @@ export const TheProblemPage = () => {
     <p><Typography variant='body1'>
       The diagram depicts a typical pre-production environment.  Here, we have a target service with two dependency services A and B.  If service A or B goes down, than the target service is unusable.         
     </Typography></p>
-    <p><img src='images/environment_with_flowmock.png' alt='Environment with FlowMock' style={{width: '800px'}} /></p>
     <p><Typography variant='h4'>The Solution</Typography></p>
+    <p><img src='images/environment_with_flowmock.png' alt='Environment with FlowMock' style={{width: '800px'}} /></p>
     <Typography variant='body1'>
       <p>FlowMock is designed to run in the environment as a dedicated service.  It acts as a proxy between the target service and its dependencies.  A single instance of FlowMock can route traffic to multiple services.</p>
       <p>In the diagram above, FlowMock is configured to route path <code>/proxy/servicea/api/foo</code> to service A's <code>/api/foo</code> and <code>/proxy/serviceb/api/bar</code> to service B's <code>/api/bar</code>.

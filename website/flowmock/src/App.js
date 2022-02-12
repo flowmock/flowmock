@@ -11,10 +11,13 @@ import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import IconButton from '@mui/material/IconButton';
+import HomeIcon from '@mui/icons-material/Home';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import DownloadIcon from '@mui/icons-material/Download';
+import HikingIcon from '@mui/icons-material/Hiking';
+import CookieIcon from '@mui/icons-material/Cookie';
 
 import { Homepage } from './pages/HomePage';
 import { InstallationPage } from './pages/InstallationPage';
@@ -57,31 +60,31 @@ function App() {
           <List>
             <ListItem button selected={page==='home'}  onClick={() => setPage('home')} >
               <ListItemIcon>
-                <InboxIcon />
+                <HomeIcon />
               </ListItemIcon>
               <ListItemText primary='Home' />
             </ListItem>
             <ListItem button selected={page==='problem'}  onClick={() => setPage('problem')}>
               <ListItemIcon>
-                <InboxIcon />
+                <QuestionMarkIcon />
               </ListItemIcon>
               <ListItemText primary='The Problem' />
             </ListItem>
             <ListItem button selected={page==='install'}  onClick={() => setPage('install')}>
               <ListItemIcon>
-                <InboxIcon />
+                <DownloadIcon />
               </ListItemIcon>
               <ListItemText primary='Installation' />
             </ListItem>
             <ListItem button selected={page==='tutorial'}  onClick={() => setPage('tutorial')}>
               <ListItemIcon>
-                <InboxIcon />
+                <HikingIcon />
               </ListItemIcon>
               <ListItemText primary='Tutorial' />
             </ListItem>
             <ListItem button selected={page==='recipes'}  onClick={() => setPage('recipes')}>
               <ListItemIcon>
-                <InboxIcon />
+                <CookieIcon />
               </ListItemIcon>
               <ListItemText primary='Recipes' />
             </ListItem>

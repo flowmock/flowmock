@@ -6,6 +6,7 @@ export const Homepage = () => {
     return (<Box sx={{maxWidth: '800px' }}>
     <p><Typography variant='h4'>FlowMock</Typography></p>
     <p><img src='images/flowmock_screenshot.jpg' alt='Flowmock screenshot' style={{width: '800px'}} /></p>
+    <p><p><Typography variant='body1'><a href='https://github.com/flowmock/flowmock'>https://github.com/flowmock/flowmock</a></Typography></p></p>
     <p><Typography variant='body1'>
       A flow-based high performance programmable HTTP mocker and proxy, designed to enable testing of difficult to setup 
       scenarios or to support/replace 3rd party sandbox environments in pre-production environment.            

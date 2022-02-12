@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 
 export const TheProblemPage = () => {
     return (<Box sx={{maxWidth: '800px' }}>
-    <p><Typography variant='h4'>The Problem</Typography></p>
+    <p><Typography variant='h4'>The Problem</Typography></p>    
     <p><img src='images/environment_without_flowmock.png' alt='Enviornment without FlowMock' style={{width: '500px'}} /></p>
     <p><Typography variant='body1'>
       The diagram depicts a typical pre-production environment.  Here, we have a target service with two dependency services A and B.  If service A or B goes down, than the target service is unusable.         

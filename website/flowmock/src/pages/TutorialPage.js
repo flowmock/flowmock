@@ -16,11 +16,11 @@ export const TutorialPage = () => {
       > docker run -it -p 8080:80 -d flowmock/flowmock
     `
 
-    const code3 = `
-      > curl -X POST http://localhost:8080/api/proxymapping \\
-      -H 'Content-Type: application/json' \\
-      -d '[{"basePath":"uselessfacts","proxyToBaseUrl":"https://uselessfacts.jsph.pl/"}]'
-    `
+    // const code3 = `
+    //   > curl -X POST http://localhost:8080/api/proxymapping \\
+    //   -H 'Content-Type: application/json' \\
+    //   -d '[{"basePath":"uselessfacts","proxyToBaseUrl":"https://uselessfacts.jsph.pl/"}]'
+    // `
 
     const code4 = `
       > curl http://localhost:8080/proxy/uselessfacts/random.json?language=en
@@ -48,13 +48,21 @@ export const TutorialPage = () => {
       The first thing we need to do is configure a route for the API.  By default, FlowMock will
       handle requests that starts with '/proxy'.  We will route '/proxy/uselessfacts' to 
       'https://uselessfacts.jsph.pl/':
-      <CodeBlock text={code3} language='bash' showLineNumbers={false} />
+      <img src='images/chrome_T2hrgbVByW.gif' alt='Add new proxy mapping via FAP' style={{width:'800px'}} />
     </p>
     <p>
       And just like that, we can now make requests to the proxy endpoint:
       <CodeBlock text={code4} language='bash' showLineNumbers={false} />
     </p>
-    
+    <p>
+      Now to create a mock from the request:
+      <img src='images/chrome_ZEO436eBnc.gif' alt='Create mock from request.' style={{width:'800px'}} />     
+    </p>
+    <p>
+      Requests to the proxy endpoint are now mocked:
+      <CodeBlock text={code4} language='bash' showLineNumbers={false} />
+      <img src='images/chrome_XXCafNXdxh.gif' alt='Requests are now mocked.' style={{width:'800px'}} />   
+    </p>
     </Typography>
   </Box>)
 }

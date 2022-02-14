@@ -1,5 +1,6 @@
 ﻿using FlowMock.Engine.Data;
 using FlowMock.Engine.Models;
+using LazyCache;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowMock.Web.Controllers
@@ -10,11 +11,13 @@ namespace FlowMock.Web.Controllers
     {
         private readonly ILogger<SettingController> _logger;
         private readonly IDataAccess _dataAccess;
+        private readonly IAppCache _appCache;
 
-        public MockController(ILogger<SettingController> logger, IDataAccess dataAccess)
+        public MockController(ILogger<SettingController> logger, IDataAccess dataAccess, IAppCache appCache)
         {
             _logger = logger;
             _dataAccess = dataAccess;
+            _appCache = appCache;
         }
 
         [HttpGet]
@@ -32,18 +35,21 @@ namespace FlowMock.Web.Controllers
         [HttpPost]
         public async Task<Mock> Post([FromBody] Mock mock)
         {
+            _appCache.Remove("mocks");
             return await _dataAccess.AddMockAsync(mock);
         }
 
         [HttpDelete("{id}")]
         public async Task Delete(long id)
         {
+            _appCache.Remove("mocks");
             await _dataAccess.DeleteMockAsync(id);
         }
 
         [HttpPut("{id}")]
         public async Task Put(long id, [FromBody] Mock mock)
         {
+            _appCache.Remove("mocks");
             await _dataAccess.UpdateMockAsync(mock);
         }
     }

@@ -54,9 +54,10 @@ namespace FlowMock.Engine.Data
                 response_body VARCHAR(100000) NULL
                 );");
 
+            await connection.ExecuteAsync(@"INSERT INTO settings (key, value, description) values ('Proxy Base Path', '/proxy', 'The base path for all proxy requests.');");
+
             if (includeTestData)
             {
-                await connection.ExecuteAsync(@"INSERT INTO settings (key, value, description) values ('Proxy Base Path', '/proxy', 'The base path for all proxy requests.');");
                 await connection.ExecuteAsync(@"INSERT INTO proxy_mappings (base_path, proxy_to_base_url) values ('chucknorris', 'https://api.chucknorris.io');");
                 await connection.ExecuteAsync(@"INSERT INTO proxy_mappings (base_path, proxy_to_base_url) values ('excuse', 'https://excuser.herokuapp.com/v1/excuse');");
                 await connection.ExecuteAsync("INSERT INTO mocks (priority, name, description, parameters, trigger, response_status, response_headers, response_body) values (100, 'A simple mock', 'A description for a simple mock', '[{\"name\": \"foo\", \"value\": \"bar\"}]', '{}', 200, '[]', 'A response from the simple mock.');");

@@ -5,7 +5,7 @@ import { CodeBlock } from "react-code-blocks";
 
 export const TutorialPage = () => {
     const code1 = `
-      > curl -v https://uselessfacts.jsph.pl/random.json?language=en
+      > curl https://uselessfacts.jsph.pl/random.json?language=en
       {"id":"f8eea461-5ffb-4cad-ada1-8d99f75df952","text":"It takes 3,000 cows to supply the NFL 
       with enough leather for a year's supply of footballs.","source":"djtech.net","source_url":
       "http://www.djtech.net/humor/useless_facts.htm","language":"en","permalink":
@@ -19,11 +19,11 @@ export const TutorialPage = () => {
     const code3 = `
       > curl -X POST http://localhost:8080/api/proxymapping \\
       -H 'Content-Type: application/json' \\
-      -d '{"basePath":"uselessfacts","proxyToBaseUrl":"https://uselessfacts.jsph.pl/"}'
+      -d '[{"basePath":"uselessfacts","proxyToBaseUrl":"https://uselessfacts.jsph.pl/"}]'
     `
 
     const code4 = `
-      > curl -v http://localhost:8080/proxy/uselessfacts/random.json?language=en
+      > curl http://localhost:8080/proxy/uselessfacts/random.json?language=en
       {"id":"f8eea461-5ffb-4cad-ada1-8d99f75df952","text":"It takes 3,000 cows to supply the NFL 
       with enough leather for a year's supply of footballs.","source":"djtech.net","source_url":
       "http://www.djtech.net/humor/useless_facts.htm","language":"en","permalink":
@@ -41,17 +41,17 @@ export const TutorialPage = () => {
       <CodeBlock text={code1} language='bash' showLineNumbers={false} />
     </p>
     <p>
-      No let's run FlowMock:
+      No let's run FlowMock on port 8080:
       <CodeBlock text={code2} language='bash' showLineNumbers={false} />
     </p>
     <p>
       The first thing we need to do is configure a route for the API.  By default, FlowMock will
       handle requests that starts with '/proxy'.  We will route '/proxy/uselessfacts' to 
-      'https://uselessfacts.jsph.pl/'.
+      'https://uselessfacts.jsph.pl/':
       <CodeBlock text={code3} language='bash' showLineNumbers={false} />
     </p>
     <p>
-      And just like that, we can now make requests to the mock endpoint.
+      And just like that, we can now make requests to the proxy endpoint:
       <CodeBlock text={code4} language='bash' showLineNumbers={false} />
     </p>
     
